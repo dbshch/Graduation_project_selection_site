@@ -1,8 +1,4 @@
 import mysql.connector
-import copy
-import hashlib
-import os
-import binascii
 
 config = {
     'user': 'root',
@@ -28,8 +24,6 @@ def dataQuery(qry):
 def check(uid, pwd):
     qry = ("SELECT pwd FROM users WHERE id = %s" % uid)
     res = dataQuery(qry)
-    print(res[0][0])
-    print(pwd)
     if res[0]:
         pd = int(res[0][0])
         # pwd = hashlib.new("md5", pwd + salt).hexdigest()
@@ -52,6 +46,7 @@ def allUsers():
     for (u_name) in qry:
         res.append(u_name[0])
     return res
+
 
 def queryUser(uid):
     qry = dataQuery(("SELECT role, registed FROM users WHERE id = '%s'" % uid))
@@ -118,7 +113,7 @@ def quitProj(userid, id, wish_i):
 
 def isGrouped(userid):
     res = dataQuery(("SELECT grouped FROM users WHERE id=%d" % userid))
-    if res[0][0]=="n":
+    if res[0][0] == "n":
         return False
     return True
 
@@ -129,7 +124,49 @@ def isLeader(userid):
         return True
     return False
 
+
 def groupStat(userid):
     res = dataQuery(("SELECT grouped FROM users WHERE id=%d" % userid))
     return res[0][0]
-#TODO: The insert functions
+
+
+def newUser(userid, u_name, role, pwd):
+    cnx = mysql.connector.connect(**config)
+    cursor = cnx.cursor()
+    op = ("INSERT INTO users VALUES ('%s', '%s', '{1:\'None\',2:\'None\',3:\'None\'}', '%s', 'n,n,n', %d, 'n'" % (
+        u_name, role, pwd, int(userid)))
+    cursor.execute(op)
+    cnx.commit()
+    cursor.close()
+    cnx.close()
+
+
+def newProject(title, detial):
+    cnx = mysql.connector.connect(**config)
+    cursor = cnx.cursor()
+    max = cursor.execute("SELECT MAX(id) FROM projects")[0][0]
+    op = ("INSERT INTO projects VALUES (%d, '%s', '%s', 'None', 'None', 'None')" % (max + 1, title, detial))
+    cursor.execute(op)
+    cnx.commit()
+    cursor.close()
+    cnx.close()
+
+
+def deleteProject(id):
+    cnx = mysql.connector.connect(**config)
+    cursor = cnx.cursor()
+    op = ("DELETE FROM projects WHERE id=%d" % int(id))
+    cursor.execute(op)
+    cnx.commit()
+    cursor.close()
+    cnx.close()
+
+
+def deleteUser(userid):
+    cnx = mysql.connector.connect(**config)
+    cursor = cnx.cursor()
+    op = ("DELETE FROM users WHERE id=%d" % int(userid))
+    cursor.execute(op)
+    cnx.commit()
+    cursor.close()
+    cnx.close()
