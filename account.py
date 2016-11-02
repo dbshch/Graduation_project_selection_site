@@ -16,12 +16,19 @@ class LoginHandler(BaseHandler):  # Todo Jaccount login
         pwd = self.get_argument('password')
         # salt = binascii.hexlify(os.urandom(20)).decode()
         res = check(uid, pwd)
+
         if res:
+            u_name = queryUser(uid)['u_name']
+            self.set_secure_cookie("u_name", u_name)
             self.set_secure_cookie("username", str(uid))
         self.redirect("/")
 
 
 class LogoutHandler(BaseHandler):
+    def get(self):
+        self.clear_cookie("username")
+        self.clear_cookie("u_name")
+        self.redirect("/")
     def post(self):
         if (self.get_argument("logout", None)):
             self.clear_cookie("username")

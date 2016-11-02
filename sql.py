@@ -24,7 +24,7 @@ def dataQuery(qry):
 def check(uid, pwd):
     qry = ("SELECT pwd FROM users WHERE id = %s" % uid)
     res = dataQuery(qry)
-    if res[0]:
+    if res:
         pd = int(res[0][0])
         # pwd = hashlib.new("md5", pwd + salt).hexdigest()
         if int(pwd) == pd:
@@ -49,9 +49,10 @@ def allUsers():
 
 
 def queryUser(uid):
-    qry = dataQuery(("SELECT role, registed FROM users WHERE id = '%s'" % uid))
+    qry = dataQuery(("SELECT u_name, role, registed FROM users WHERE id = %s" % uid))
     res = {}
-    for (role, registed) in qry:
+    for (u_name, role, registed) in qry:
+        res['u_name'] = u_name
         res["role"] = role
         res["registed"] = registed
     return res

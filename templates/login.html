@@ -1,14 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JI Graduation Projects</title>
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../static/global.css">
+    <link rel="stylesheet" href="../static/login.css">
 </head>
 <body>
-<h>Login Page</h>
-<form action="/login" method="post">Name:<input type="text" name="username"></br>
-    Password:<input type="text" name="password"></br>
-    <input type="submit" value="Sign in"></br>
-</form>
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="my-toggle navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+            </button>
+            <a class="navbar-brand" href="#">
+                <p>JI Graduation Project Website</p>
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse" aria-expanded="false">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="/">Projects</a>
+                </li>
+                <li>
+                    <a href="groups.html">Groups</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Not logged in<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="dashboard.html">My Profile</a></li>
+                        <li><a href="#">My Project</a></li>
+                        <li><a href="#">Log out</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Create a Group</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Create a Project</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="contents login-panel">
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form role="form" action="/login" method="post">
+                    <!-- <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                    </div>-->
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Student ID</label>
+                        <input class="form-control" name="username" id="exampleInputEmail1" placeholder="Enter Student ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                    <!--<div class="form-group">
+                        <label for="exampleInputFile">File input</label>
+                        <input type="file" id="exampleInputFile">
+                        <!--<p class="help-block">Example block-level help text here.</p>-->
+                    <!--</div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox">Agree some licence
+                        </label>
+                    </div>-->
+                    <button type="submit" value="Sign in" class="btn btn-default btn-login-submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

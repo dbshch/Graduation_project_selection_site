@@ -8,17 +8,17 @@ import func
 import os
 from account import *
 
-define("port", default=8090, help="run on the given port", type=int)
+define("port", default=8080, help="run on the given port", type=int)
 
 
 class WelcomeHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         uid = tornado.escape.xhtml_escape(self.current_user)
+        print(uid)
+        u_name = self.get_secure_cookie('u_name').decode('UTF-8')
         projs = allProjects()
-        print(projs)
-        print(len(projs))
-        self.render('index.html', user=uid, projs=projs)
+        self.render('index.html', user=u_name, projs=projs)
         # TODO: the sort and filter functions; The way to show brief view of projects
 
 

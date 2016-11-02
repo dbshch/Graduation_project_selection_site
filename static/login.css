@@ -1,0 +1,9 @@
+.login-panel {
+    max-width: 400px;
+    text-align: center;
+}
+
+.btn-login-submit {
+    margin-left: auto;
+    margin-right: auto;
+}
