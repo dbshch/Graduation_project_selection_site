@@ -16,27 +16,27 @@
             <button type="button" class="my-toggle navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <i class="fa fa-bars" aria-hidden="true"></i>
             </button>
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="/">
                 <p>JI Graduation Project Website</p>
             </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse" aria-expanded="false">
             <ul class="nav navbar-nav">
                 <li class="active">
-                    <a href="index.html">Projects</a>
+                    <a href="/">Projects</a>
                 </li>
                 <li>
-                    <a href="groups.html">Groups</a>
+                    <a href="joinGroup">Groups</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fu Xiaohan<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ u_name }}<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="dashboard.html">My Profile</a></li>
-                        <li><a href="#">My Project</a></li>
+                        <li><a href="option">My Profile</a></li>
+                        <li><a href="/registed">My Project</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">Create a Group</a></li>
+                        <li><a href="/joinGroup">Create a Group</a></li>
                         <li class="divider"></li>
                         <li><a href="#">Create a Project</a></li>
                     </ul>
@@ -49,19 +49,19 @@
     <div class="container-fluid">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li class="active"><a hre="#">My Profile</a></li>
-                <li><a href="#">My Project</a></li>
-                <li><a href="#">Log out</a></li>
+                <li class="active"><a hre="/registed">My Profile</a></li>
+                <li><a href="/registed">My Project</a></li>
+                <li><a href="/logout">Log out</a></li>
             </ul>
         </div>
         <div class="col-md-10 col-md-offset-2">
             <h1 class="page-header">My Profile</h1>
             <ul>
-                <li>Name: Fu Xiaohan</li>
+                <li>Name: {{ u_name }}</li>
                 <li>Sex: Male</li>
-                <li>Student ID: 515370910xxx</li>
+                <li>Student ID: {{ uid }}</li>
                 <li>Progress: Active</li>
-                <li>Group Leader: True</li>
+                <li>Group Status: {% if data['grouped']=='l' %}Leader{% elif data['grouped']=='n' %}Not grouped yet{% else %}Member{% end %}</li>
             </ul>
         </div>
     </div>

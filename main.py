@@ -15,7 +15,6 @@ class WelcomeHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         uid = tornado.escape.xhtml_escape(self.current_user)
-        print(uid)
         u_name = self.get_secure_cookie('u_name').decode('UTF-8')
         projs = allProjects()
         self.render('index.html', user=u_name, projs=projs)
@@ -26,8 +25,10 @@ class detailHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, id):
         proj = queryProjects(id)
-
-        self.render("detail.html", i=id)
+        proj['detail'] = proj['detail'].split('\n')
+        uid = int(tornado.escape.xhtml_escape(self.current_user))
+        isIn = id in queryUser(uid)['registed']
+        self.render("detail.html", i=id, proj=proj, u_name=self.get_secure_cookie('u_name'), isIn=isIn)
         # TODO quit and register button
 
 
@@ -38,10 +39,17 @@ class registerHandler(BaseHandler):
         new = new.split(";")
         self.render("register.html", new=new)
 
+    @tornado.web.authenticated
     def post(self): # Post the result of chosen project
         res = self.get_argument("result")
-        uid = tornado.escape.xhtml_escape(self.current_user)
+        uid = int(tornado.escape.xhtml_escape(self.current_user))
+        group_stat = queryUser(uid)
+        if (group_stat['grouped'] == 'l'):
+            group_member = queryGroup(int(group_stat['group_id']))
+            for m in group_member:
+                updateUser(int(m), res)
         updateUser(uid, res)
+        self.write('success')
 
 
 class quitProj(BaseHandler):
@@ -59,18 +67,27 @@ class registedHandler(BaseHandler):
     def get(self):
         uid = tornado.escape.xhtml_escape(self.current_user)
         res = queryUser(uid)
-        res = res["registed"][1:-1]
-        res = res.split(',')
-        self.render("registed.html", registed=res)
+        self.render("registed.html", registed=res['registed'], u_name=self.get_secure_cookie("u_name"), stat=res['stat'])
 
 
 class joinGroupHandler(BaseHandler):
     @tornado.web.authenticated
-    def post(self):
-        uid = tornado.escape.xhtml_escape(self.current_user)
+    def get(self):
+        uid = int(tornado.escape.xhtml_escape(self.current_user))
+        u_name = self.get_secure_cookie('u_name').decode('UTF-8')
+        stat = queryUser(uid)['grouped']
         res = allUsers()
-        stat = groupStat()
-        self.render("joinGroup.html", users=res)
+        stat = groupStat(uid)
+        groups = allGroups()
+        l = len(groups)
+        self.render("groups.html", stat=stat, users=res, u_name=u_name, groups=groups, l=l)
+    @tornado.web.authenticated
+    def post(self):
+        uid = int(tornado.escape.xhtml_escape(self.current_user))
+        u_name = self.get_secure_cookie('u_name').decode('UTF-8')
+        res = allUsers()
+        stat = groupStat(uid)
+        self.render("groups.html", users=res, u_name=u_name)
 
 
 

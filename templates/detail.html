@@ -15,26 +15,26 @@
             <button type="button" class="my-toggle navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <i class="fa fa-bars" aria-hidden="true"></i>
             </button>
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="/">
                 <p>JI Graduation Project Website</p>
             </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse" aria-expanded="false">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="index.html">Projects</a>
+                    <a href="/">Projects</a>
                 </li>
                 <li>
-                    <a href="groups.html">Groups</a>
+                    <a href="/joinGroup">Groups</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fu Xiaohan<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ u_name }}<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="dashboard.html">My Profile</a></li>
-                        <li><a href="#">My Project</a></li>
-                        <li><a href="#">Log out</a></li>
+                        <li><a href="/option">My Profile</a></li>
+                        <li><a href="/registed">My Project</a></li>
+                        <li><a href="/logout">Log out</a></li>
                         <li class="divider"></li>
                         <li><a href="#">Create a Group</a></li>
                         <li class="divider"></li>
@@ -49,18 +49,24 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8">
-                <img class="thumbnail img-responsive" src="img/image1.jpg">
-                <p>Kinect (codenamed Project Natal during development) is a line of motion sensing input devices by Microsoft for Xbox 360 and Xbox One video game consoles and Windows PCs. Based around a webcam-style add-on peripheral, it enables users to control and interact with their console/computer without the need for a game controller, through a natural user interface using gestures and spoken commands.[10] The first-generation Kinect was first introduced in November 2010 in an attempt to broaden Xbox 360's audience beyond its typical gamer base.[11] A version for Windows was released on February 1, 2012.[6] Kinect competes with several motion controllers on other home consoles, such as Wii Remote Plus for Wii and Wii U, PlayStation Move/PlayStation Eye for PlayStation 3, and PlayStation Camera for PlayStation 4.
-
-                    Microsoft released the Kinect software development kit for Windows 7 on June 16, 2011.[12][13][14] This SDK was meant to allow developers to write Kinecting apps in C++/CLI, C#, or Visual Basic .NET.[15][16]
+                <img class="thumbnail img-responsive" src="/img/{{ proj['img'] }}">
+                {% for p in proj['detail'] %}
+                <p>{{ p }}
                 </p>
+                {% end %}
             </div>
             <div class="col-md-4">
+                {% if isIn==False %}
                 <div class="project-submit">
                     <button class="btn btn-primary">Register the Project</button>
                 </div>
+                {% else %}
+                <div class="project-submit">
+                    <button class="btn btn-primary">Quit the Project</button>
+                </div>
+                {% end %}
                 <div class="peoples-in">
-                    <p>A group has chosen this project.</p>
+                    <!--<p>A group has chosen this project.</p>-->
                 </div>
             </div>
         </div>

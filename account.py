@@ -39,4 +39,5 @@ class optionHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         uid = tornado.escape.xhtml_escape(self.current_user)
-        self.render("option.html")
+        data = queryUser(uid)
+        self.render("dashboard.html", uid=uid, u_name=self.get_secure_cookie('u_name'), data=data)

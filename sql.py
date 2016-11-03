@@ -1,4 +1,5 @@
 import mysql.connector
+import copy
 
 config = {
     'user': 'root',
@@ -33,10 +34,21 @@ def check(uid, pwd):
 
 
 def allProjects():
-    qry = dataQuery(("SELECT title, id FROM projects"))
+    qry = dataQuery(("SELECT id, title, img, sponsor, detail, wish1, wish2, wish3 FROM projects"))
+    projs = []
     res = {}
-    for (title, id) in qry:
-        res[id] = title
+    for (id, title, img, sponsor, detail, wish1, wish2, wish3) in qry:
+        res['id'] = id
+        res["title"] = title
+        res['img'] = img
+        res['sponsor'] = sponsor
+        res["detail"] = detail
+        res["wish1"] = wish1
+        res["wish2"] = wish2
+        res["wish3"] = wish3
+        projs.append(copy.deepcopy(res))
+    return projs
+
     return res
 
 
@@ -49,20 +61,25 @@ def allUsers():
 
 
 def queryUser(uid):
-    qry = dataQuery(("SELECT u_name, role, registed FROM users WHERE id = %s" % uid))
+    qry = dataQuery(("SELECT u_name, role, registed, stat, grouped, group_id FROM users WHERE id = %s" % uid))
     res = {}
-    for (u_name, role, registed) in qry:
+    for (u_name, role, registed, stat, grouped, group_id) in qry:
         res['u_name'] = u_name
         res["role"] = role
-        res["registed"] = registed
+        res["registed"] = registed.split(',')
+        res['stat'] = stat.split(',')
+        res['grouped'] = grouped
+        res['group_id'] = group_id
     return res
 
 
 def queryProjects(id):
-    qry = dataQuery(("SELECT title, detail, wish1, wish2, wish3 FROM projects WHERE id = %d" % int(id)))
+    qry = dataQuery(("SELECT title, img, sponsor, detail, wish1, wish2, wish3 FROM projects WHERE id = %d" % int(id)))
     res = {}
-    for (title, detail, wish1, wish2, wish3) in qry:
+    for (title, img, sponsor, detail, wish1, wish2, wish3) in qry:
         res["title"] = title
+        res['img'] = img
+        res['sponsor'] = sponsor
         res["detail"] = detail
         res["wish1"] = wish1
         res["wish2"] = wish2
@@ -171,3 +188,23 @@ def deleteUser(userid):
     cnx.commit()
     cursor.close()
     cnx.close()
+
+
+def allGroups():
+    qry = dataQuery(("SELECT * FROM groups"))
+    groups = []
+    res = {}
+    for (id, leader, users, isFull) in qry:
+        res['leader'] = leader
+        res['id'] = id
+        res['users'] = users
+        res['isFull'] = isFull
+        groups.append(copy.deepcopy(res))
+    return groups
+
+
+def queryGroup(id):
+    qry = dataQuery(("SELECT user_id FROM groups WHERE id=%d" % id))
+    for (user_id) in qry:
+        res = user_id.split(";")
+    return res
