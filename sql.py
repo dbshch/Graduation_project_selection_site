@@ -194,10 +194,12 @@ def allGroups():
     qry = dataQuery(("SELECT * FROM groups"))
     groups = []
     res = {}
-    for (id, leader, users, isFull) in qry:
+    for (id, leader, users, leader_id, user_id, isFull) in qry:
         res['leader'] = leader
         res['id'] = id
         res['users'] = users
+        res['leader_id'] = leader_id
+        res['user_id'] = user_id
         res['isFull'] = isFull
         groups.append(copy.deepcopy(res))
     return groups

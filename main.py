@@ -14,10 +14,11 @@ define("port", default=8080, help="run on the given port", type=int)
 class WelcomeHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        uid = tornado.escape.xhtml_escape(self.current_user)
+        uid = int(tornado.escape.xhtml_escape(self.current_user))
         u_name = self.get_secure_cookie('u_name').decode('UTF-8')
         projs = allProjects()
-        self.render('index.html', user=u_name, projs=projs)
+        role = queryUser(uid)['role']
+        self.render('index.html', user=u_name, projs=projs, role=role)
         # TODO: the sort and filter functions; The way to show brief view of projects
 
 
@@ -28,7 +29,8 @@ class detailHandler(BaseHandler):
         proj['detail'] = proj['detail'].split('\n')
         uid = int(tornado.escape.xhtml_escape(self.current_user))
         isIn = id in queryUser(uid)['registed']
-        self.render("detail.html", i=id, proj=proj, u_name=self.get_secure_cookie('u_name'), isIn=isIn)
+        role = queryUser(uid)['role']
+        self.render("detail.html", i=id, proj=proj, u_name=self.get_secure_cookie('u_name'), isIn=isIn, role=role)
         # TODO quit and register button
 
 
@@ -37,7 +39,9 @@ class registerHandler(BaseHandler):
     def get(self): # The register page
         new = self.get_argument("item") # the new project to be chosen
         new = new.split(";")
-        self.render("register.html", new=new)
+        uid = int(tornado.escape.xhtml_escape(self.current_user))
+        role = queryUser(uid)['role']
+        self.render("register.html", new=new, role=role)
 
     @tornado.web.authenticated
     def post(self): # Post the result of chosen project
@@ -55,7 +59,7 @@ class registerHandler(BaseHandler):
 class quitProj(BaseHandler):
     @tornado.web.authenticated
     def post(self):
-        uid = tornado.escape.xhtml_escape(self.current_user)
+        uid = int(tornado.escape.xhtml_escape(self.current_user))
         id = int(self.get_argument("id"))
         wish_i = int(self.get_argument("wish_i"))
         quitProj(uid, id, wish_i)
@@ -65,9 +69,10 @@ class quitProj(BaseHandler):
 class registedHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        uid = tornado.escape.xhtml_escape(self.current_user)
+        uid = int(tornado.escape.xhtml_escape(self.current_user))
         res = queryUser(uid)
-        self.render("registed.html", registed=res['registed'], u_name=self.get_secure_cookie("u_name"), stat=res['stat'])
+        role = queryUser(uid)['role']
+        self.render("registed.html", registed=res['registed'], u_name=self.get_secure_cookie("u_name"), stat=res['stat'], role=role)
 
 
 class joinGroupHandler(BaseHandler):
@@ -75,12 +80,14 @@ class joinGroupHandler(BaseHandler):
     def get(self):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
         u_name = self.get_secure_cookie('u_name').decode('UTF-8')
-        stat = queryUser(uid)['grouped']
+        res = queryUser(uid)
+        stat = res['grouped']
+        role = res['role']
         res = allUsers()
         stat = groupStat(uid)
         groups = allGroups()
         l = len(groups)
-        self.render("groups.html", stat=stat, users=res, u_name=u_name, groups=groups, l=l)
+        self.render("groups.html", stat=stat, users=res, u_name=u_name, groups=groups, l=l, role=role)
     @tornado.web.authenticated
     def post(self):
         uid = int(tornado.escape.xhtml_escape(self.current_user))

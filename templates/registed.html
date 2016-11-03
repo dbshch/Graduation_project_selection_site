@@ -36,11 +36,17 @@
                             class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="option">My Profile</a></li>
+                        {% if role=='stu' %}
                         <li><a href="/registed">My Project</a></li>
+                        {% end %}
+                        <li><a href="/logout">Log out</a></li>
+                        {% if role=='stu' %}
                         <li class="divider"></li>
-                        <li><a href="/joinGroup">Create a Group</a></li>
+                        <li><a href="#">Create a Group</a></li>
+                        {% else %}
                         <li class="divider"></li>
                         <li><a href="#">Create a Project</a></li>
+                        {% end %}
                     </ul>
                 </li>
             </ul>
