@@ -33,19 +33,6 @@ def style_range(ws, cell_range, border=Border(), fill=None, font=None, alignment
                 c.fill = fill
 
 
-def example():
-    wb = Workbook()
-    # grab the active worksheet
-    ws = wb.active
-    # Data can be assigned directly to cells
-    ws['A1'] = 42
-    # Rows can also be appended
-    ws.append([1, 2, 3])
-    # Python types will automatically be converted
-    ws['A2'] = datetime.datetime.now()
-    # Save the file
-    wb.save("example.xlsx")
-
 
 def multiCell(ws, value, rng, b=False, color="000000", horizontal="center", vertical="center"):
     my_cell = ws[rng.split(":")[0]]
@@ -55,7 +42,7 @@ def multiCell(ws, value, rng, b=False, color="000000", horizontal="center", vert
     style_range(ws, rng, font=font, alignment=al)
 
 
-def export():
+def export(data, output):
     wb = Workbook()
     ws = wb.active
     multiCell(ws, "Proj. No.", "A1:A2")
@@ -65,9 +52,30 @@ def export():
         cell = ws["%s2" % chr(ord('C') + i)]
         cell.value = i + 1
         cell.alignment = Alignment(horizontal="center", vertical="center")
-    wb.save("test.xlsx")
-    # TODO: the writing of excel data
+    end_of_project_cell = 2
+    end_of_group_cell = [2, 2, 2]
+    for project in data:
+        if project['groups'][0] or project['groups'][1] or project['groups'][2]:
+            for i in range(3):
+                pref = project['groups'][i]
+                if pref:
+                    for group in pref:
+                        for student in group:
+                            end_of_group_cell[i] += 1
+                            ws['%s%d' % (chr(67 + i), end_of_group_cell[i])] = student
+                        end_of_group_cell[i] += 1
+            tmp = max(end_of_group_cell) + 2
+            multiCell(ws, project['i'], "A%d:A%d" % (end_of_project_cell + 1, tmp))
+            multiCell(ws, project['title'], "B%d:B%d" % (end_of_project_cell + 1, tmp))
+            for i in range(3):
+                end_of_group_cell[i] = tmp
+            end_of_project_cell = tmp
+
+    wb.save(output)
 
 
 if __name__ == "__main__":
-    export()
+    data = [{'i': 1, 'title': 'Freesense-Backlight Panel Defect Recognition', 'groups': [[['吴承刚']], [[]], [[]]]}]
+    data.append({'i': 2, 'title': 'Recognition', 'groups': [[['钱神']], [['负心汉', '陈亦轩']], [[]]]})
+    data.append({'i': 3, 'title': 'abcd', 'groups': [[['钱神']], [['负心汉', '陈亦轩']], [['钱神'], ['负心汉', '陈亦轩']]]})
+    export(data, 'test.xlsx')
