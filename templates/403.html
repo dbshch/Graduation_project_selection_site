@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="../static/global.css">
-    <link rel="stylesheet" href="../static/groups.css">
 </head>
 <body>
 <nav class="navbar navbar-inverse" role="navigation">
@@ -23,23 +22,22 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse" aria-expanded="false">
             <ul class="nav navbar-nav">
-                <li>
+                <li class="active">
                     <a href="/">Projects</a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="joinGroup">Groups</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ u_name }}<span
-                            class="caret"></span></a>
+                    <a href="/" class="dropdown-toggle" data-toggle="dropdown">{{ u_name }}<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="/option">My Profile</a></li>
+                        <li><a href="option">My Profile</a></li>
                         {% if role=='stu' %}
                         <li><a href="/registed">My Project</a></li>
                         {% else %}
-                        <li><a href="/export">Export data</a> </li>
+                        <li><a href="/export">Export data</a></li>
                         {% end %}
                         <li><a href="/logout">Log out</a></li>
                         {% if role=='stu' %}
@@ -55,36 +53,11 @@
         </div>
     </div>
 </nav>
-<div class="contents groups">
-    <div class="container-fluid">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <td>Group No.</td>
-                <td>Group Leader</td>
-                <td>Group Members</td>
-                <td></td>
-            </tr>
-            </thead>
-            <tbody>
-            {% for i in range(l) %}
-            <tr>
-                <td>{{ i+1 }}</td>
-                <td>{{ groups[i]['leader'] }}</td>
-                <td>{{ groups[i]['users'] }}</td>
-                {% if stat=='n' and role=='stu' %}
-                <td>
-                    {% if groups[i]['isFull']==False %}
-                    <button class="btn btn-default">Request to Join</button>
-                    {% else %}
-                    <button class="btn btn-default">The group is full</button>
-                    {% end %}
-                </td>
-                {% end %}
-            </tr>
-            {% end %}
-            </tbody>
-        </table>
+<div class="projects">
+    <div class="single-project">
+        <div class="container">
+            You are not premitted to access this page
+        </div>
     </div>
 </div>
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>

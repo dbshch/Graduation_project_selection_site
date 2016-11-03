@@ -36,6 +36,8 @@
                         <li><a href="option">My Profile</a></li>
                         {% if role=='stu' %}
                         <li><a href="/registed">My Project</a></li>
+                        {% else %}
+                        <li><a href="/export">Export data</a> </li>
                         {% end %}
                         <li><a href="/logout">Log out</a></li>
                         {% if role=='stu' %}
@@ -55,8 +57,12 @@
     <div class="container-fluid">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li class="active"><a hre="/registed">My Profile</a></li>
+                <li class="active"><a href="/registed">My Profile</a></li>
+                {% if role=='stu' %}
                 <li><a href="/registed">My Project</a></li>
+                {% else %}
+                <li><a href="/export">Export Data</a></li>
+                {% end %}
                 <li><a href="/logout">Log out</a></li>
             </ul>
         </div>

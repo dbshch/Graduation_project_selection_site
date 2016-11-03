@@ -33,7 +33,6 @@ def style_range(ws, cell_range, border=Border(), fill=None, font=None, alignment
                 c.fill = fill
 
 
-
 def multiCell(ws, value, rng, b=False, color="000000", horizontal="center", vertical="center"):
     my_cell = ws[rng.split(":")[0]]
     my_cell.value = value

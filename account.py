@@ -9,11 +9,13 @@ class BaseHandler(tornado.web.RequestHandler):
 
 class LoginHandler(BaseHandler):  # Todo Jaccount login
     def get(self):
-        self.render('login.html')
+        next = self.get_argument('next')
+        self.render('login.html', next=next)
 
     def post(self):
         uid = self.get_argument('username')
         pwd = self.get_argument('password')
+        next = self.get_argument('next')
         # salt = binascii.hexlify(os.urandom(20)).decode()
         res = check(uid, pwd)
 
@@ -21,7 +23,7 @@ class LoginHandler(BaseHandler):  # Todo Jaccount login
             u_name = queryUser(uid)['u_name']
             self.set_secure_cookie("u_name", u_name)
             self.set_secure_cookie("username", str(uid))
-        self.redirect("/")
+        self.redirect(next)
 
 
 class LogoutHandler(BaseHandler):

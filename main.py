@@ -6,6 +6,7 @@ from tornado.options import define, options
 from sql import *
 import func
 import os
+import pyxlsx
 from account import *
 
 define("port", default=8080, help="run on the given port", type=int)
@@ -18,7 +19,7 @@ class WelcomeHandler(BaseHandler):
         u_name = self.get_secure_cookie('u_name').decode('UTF-8')
         projs = allProjects()
         role = queryUser(uid)['role']
-        self.render('index.html', user=u_name, projs=projs, role=role)
+        self.render('index.html', u_name=u_name, projs=projs, role=role)
         # TODO: the sort and filter functions; The way to show brief view of projects
 
 
@@ -36,15 +37,15 @@ class detailHandler(BaseHandler):
 
 class registerHandler(BaseHandler):
     @tornado.web.authenticated
-    def get(self): # The register page
-        new = self.get_argument("item") # the new project to be chosen
+    def get(self):  # The register page
+        new = self.get_argument("item")  # the new project to be chosen
         new = new.split(";")
         uid = int(tornado.escape.xhtml_escape(self.current_user))
         role = queryUser(uid)['role']
         self.render("register.html", new=new, role=role)
 
     @tornado.web.authenticated
-    def post(self): # Post the result of chosen project
+    def post(self):  # Post the result of chosen project
         res = self.get_argument("result")
         uid = int(tornado.escape.xhtml_escape(self.current_user))
         group_stat = queryUser(uid)
@@ -65,14 +66,18 @@ class quitProj(BaseHandler):
         quitProj(uid, id, wish_i)
 
 
-
 class registedHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
         res = queryUser(uid)
         role = queryUser(uid)['role']
-        self.render("registed.html", registed=res['registed'], u_name=self.get_secure_cookie("u_name"), stat=res['stat'], role=role)
+        u_name = self.get_secure_cookie("u_name").decode("UTF-8")
+        if role=='admin':
+            self.render('403.html', u_name=u_name, role=role)
+        else:
+            self.render("registed.html", registed=res['registed'], u_name=u_name,
+                    stat=res['stat'], role=role)
 
 
 class joinGroupHandler(BaseHandler):
@@ -88,6 +93,7 @@ class joinGroupHandler(BaseHandler):
         groups = allGroups()
         l = len(groups)
         self.render("groups.html", stat=stat, users=res, u_name=u_name, groups=groups, l=l, role=role)
+
     @tornado.web.authenticated
     def post(self):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
@@ -97,6 +103,30 @@ class joinGroupHandler(BaseHandler):
         self.render("groups.html", users=res, u_name=u_name)
 
 
+class forbiddenHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        u_name = self.get_secure_cookie('u_name').decode('UTF-8')
+        uid = int(tornado.escape.xhtml_escape(self.current_user))
+        role = queryUser(uid)['role']
+        self.render('403.html', u_name=u_name, role=role)
+
+class exportHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        uid = int(tornado.escape.xhtml_escape(self.current_user))
+        role = queryUser(uid)['role']
+        u_name = self.get_secure_cookie('u_name').decode('UTF-8')
+        if role=='stu':
+            self.render('403.html', u_name=u_name, role=role)
+        else:
+            self.render('export.html', u_name=u_name, role=role)
+
+    @tornado.web.authenticated
+    def post(self):
+        data = {}
+        output = self.get_argument('output')
+        pyxlsx.export(data, output)
 
 
 if __name__ == "__main__":
@@ -117,8 +147,10 @@ if __name__ == "__main__":
         (r"/quit", quitProj),  # for students to quit projects
         (r"/joinGroup", joinGroupHandler),  # for team leader to set groups
         (r"/option", optionHandler),  # for viewing the account status
+        (r"/export", exportHandler),  # for exporting the choosing data
+        (r"/forbbiden", forbiddenHandler),
     ], debug=True, **settings)
-    # Todo The admin pages
+    # Todo The create project page
     http_server = tornado.httpserver.HTTPServer(application)
     http_server.listen(options.port)
     tornado.ioloop.IOLoop.instance().start()

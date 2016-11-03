@@ -37,6 +37,8 @@
                         <li><a href="/option">My Profile</a></li>
                         {% if role=='stu' %}
                         <li><a href="/registed">My Project</a></li>
+                        {% else %}
+                        <li><a href="/export">Export data</a> </li>
                         {% end %}
                         <li><a href="/logout">Log out</a></li>
                         {% if role=='stu' %}
@@ -62,6 +64,7 @@
                 </p>
                 {% end %}
             </div>
+            {% if role=='stu' %}
             <div class="col-md-4">
                 {% if isIn==False %}
                 <div class="project-submit">
@@ -76,6 +79,7 @@
                     <!--<p>A group has chosen this project.</p>-->
                 </div>
             </div>
+            {% end %}
         </div>
     </div>
 </div>
