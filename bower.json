@@ -1,0 +1,21 @@
+{
+  "name": "Graduation_project_selection_site",
+  "authors": [
+    "JasonQSY <syqian@sjtu.edu.cn>"
+  ],
+  "description": "",
+  "main": "index.html",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "font-awesome": "^4.7.0"
+  }
+}
