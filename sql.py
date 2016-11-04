@@ -10,81 +10,70 @@ config = {
 }
 
 
-def dataQuery(qry):
-    cnx = mysql.connector.connect(**config)
-    cursor = cnx.cursor()
-    cursor.execute(qry)
-    t = []
-    for i in cursor:
-        t.append(i)
-    cursor.close()
-    cnx.close()
-    return t
+class ippDB():
+    def __init__(self):
+        self.config = config
+        self.cnx = mysql.connector.connect(**self.config)
+        self.cursor = self.cnx.cursor(dictionary=True)
+
+    def __del__(self):
+        self.cursor.close()
+        self.cnx.close()
 
 
-def check(uid, pwd):
-    qry = ("SELECT pwd FROM users WHERE id = %s" % uid)
-    res = dataQuery(qry)
-    if res:
-        pd = int(res[0][0])
-        # pwd = hashlib.new("md5", pwd + salt).hexdigest()
-        if int(pwd) == pd:
+class dbFunction(ippDB):
+    def dataQuery(self, qry):
+        self.cursor.execute(qry)
+        t = []
+        for i in self.cursor:
+            t.append(i)
+        return t
+
+    def dataInsert(self, insrt):
+        self.cursor.execute(insrt)
+        self.cnx.commit()
+
+
+class userDB(dbFunction):
+    def __init__(self, uid):
+        self.uid = uid
+    def check(self, pwd):
+        qry = ("SELECT pwd FROM users WHERE id = %s" % self.uid)
+        res = self.dataQuery(qry)
+        if res:
+            pd = res[0]['pwd']
+            # pwd = hashlib.new("md5", pwd + salt).hexdigest()
+            if pwd == pd:
+                return True
+        return False
+
+    def allUsers(self):
+        return self.dataQuery(("SELECT id, u_name FROM users"))
+
+    def query(self):
+        return self.dataQuery(("SELECT u_name, role, registed, stat, grouped, group_id FROM users WHERE id = %s" % self.uid))
+
+    def isLeader(self):
+        res = self.dataQuery(("SELECT grouped FROM users WHERE id=%d" % int(self.uid)))
+        if res[0][0] == "l":
             return True
-    return False
+        return False
 
+    def queryGroup(self):
+        qry = self.dataQuery(("SELECT user_id FROM groups WHERE id=%d" % int(self.uid)))
+        for (user_id) in qry:
+            res = user_id.split(";")
+        return res
 
-def allProjects():
-    qry = dataQuery(("SELECT id, title, img, sponsor, detail, wish1, wish2, wish3 FROM projects"))
-    projs = []
-    res = {}
-    for (id, title, img, sponsor, detail, wish1, wish2, wish3) in qry:
-        res['id'] = id
-        res["title"] = title
-        res['img'] = img
-        res['sponsor'] = sponsor
-        res["detail"] = detail
-        res["wish1"] = wish1
-        res["wish2"] = wish2
-        res["wish3"] = wish3
-        projs.append(copy.deepcopy(res))
-    return projs
+class projectDB(dbFunction):
+    def __init__(self, id):
+        self.id = id
+    def allProjects(self):
+        return = self.dataQuery(("SELECT * FROM projects"))
 
-    return res
-
-
-def allUsers():
-    qry = dataQuery(("SELECT u_name FROM users"))
-    res = []
-    for (u_name) in qry:
-        res.append(u_name[0])
-    return res
-
-
-def queryUser(uid):
-    qry = dataQuery(("SELECT u_name, role, registed, stat, grouped, group_id FROM users WHERE id = %s" % uid))
-    res = {}
-    for (u_name, role, registed, stat, grouped, group_id) in qry:
-        res['u_name'] = u_name
-        res["role"] = role
-        res["registed"] = registed.split(',')
-        res['stat'] = stat.split(',')
-        res['grouped'] = grouped
-        res['group_id'] = group_id
-    return res
-
-
-def queryProjects(id):
-    qry = dataQuery(("SELECT title, img, sponsor, detail, wish1, wish2, wish3 FROM projects WHERE id = %d" % int(id)))
-    res = {}
-    for (title, img, sponsor, detail, wish1, wish2, wish3) in qry:
-        res["title"] = title
-        res['img'] = img
-        res['sponsor'] = sponsor
-        res["detail"] = detail
-        res["wish1"] = wish1
-        res["wish2"] = wish2
-        res["wish3"] = wish3
-    return res
+    def queryProjects(self):
+        return self.dataQuery(
+            ("SELECT * FROM projects WHERE id = %d" % int(self.id)))
 
 
 def updateWish(userid, id, seq):
@@ -136,11 +125,7 @@ def isGrouped(userid):
     return True
 
 
-def isLeader(userid):
-    res = dataQuery(("SELECT grouped FROM users WHERE id=%d" % userid))
-    if res[0][0] == "l":
-        return True
-    return False
+
 
 
 def groupStat(userid):
@@ -205,8 +190,4 @@ def allGroups():
     return groups
 
 
-def queryGroup(id):
-    qry = dataQuery(("SELECT user_id FROM groups WHERE id=%d" % id))
-    for (user_id) in qry:
-        res = user_id.split(";")
-    return res
+
