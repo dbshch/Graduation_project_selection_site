@@ -7,10 +7,10 @@ The site uses Python and Nginx as back-end and MariaDB(MySQL) as the database, j
 
 ### Python
 
-The needed packages of python are: Tornado, mysql.connector
-To install the packages using pip to install tornado
+The needed packages of python are: Tornado, mysql.connector, openpyxl
+To install the packages using pip to install tornado and openpyxl
 ```python
-pip install tornado
+pip install tornado openpyxl
 ```
 Then download the mysql connector from http://dev.mysql.com/downloads/connector/python/ and install as the orcale's instruction.
 
