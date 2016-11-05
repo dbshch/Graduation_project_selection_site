@@ -1,3 +1,16 @@
+.panel-preference {
+    text-align: center;
+}
+
+.panel-heading {
+    text-align: left;
+}
+
+.btn-giveup {
+    margin-top: -20px;
+    margin-bottom: 5px;
+}
+
 /**
  * Borrowed from http://v3.bootcss.com/examples/dashboard/dashboard.css
  */
