@@ -14,13 +14,14 @@ class LoginHandler(BaseHandler):  # Todo Jaccount login
 
     def post(self):
         uid = self.get_argument('username')
+		user = userDB(uid)
         pwd = self.get_argument('password')
         next = self.get_argument('next')
         # salt = binascii.hexlify(os.urandom(20)).decode()
-        res = check(uid, pwd)
+        res = user.check(pwd)
 
         if res:
-            u_name = queryUser(uid)['u_name']
+            u_name = user.query(uid)['u_name']
             self.set_secure_cookie("u_name", u_name)
             self.set_secure_cookie("username", str(uid))
         self.redirect(next)
@@ -41,6 +42,7 @@ class optionHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         uid = tornado.escape.xhtml_escape(self.current_user)
-        data = queryUser(uid)
+		user = userDB(uid)
+        data = user.query()
         role = data['role']
         self.render("dashboard.html", uid=uid, u_name=self.get_secure_cookie('u_name'), data=data, role=role)
