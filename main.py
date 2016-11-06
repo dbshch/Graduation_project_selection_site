@@ -18,7 +18,7 @@ class WelcomeHandler(BaseHandler):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
         u_name = self.get_secure_cookie('u_name').decode('UTF-8')
         projs = projectDB().allProjects()
-        role = userDB(uid).queryUser()['role']
+        role = userDB(uid).query()['role']
         self.render('index.html', u_name=u_name, projs=projs, role=role)
         # TODO: the sort and filter functions; The way to show brief view of projects
 
@@ -29,7 +29,7 @@ class detailHandler(BaseHandler):
         proj = projectDB(id).query()
         proj['detail'] = proj['detail'].split('\n')
         uid = int(tornado.escape.xhtml_escape(self.current_user))
-		res = userDB(uid).query()
+        res = userDB(uid).query()
         isIn = id in res['registed']
         role = res['role']
         self.render("detail.html", i=id, proj=proj, u_name=self.get_secure_cookie('u_name'), isIn=isIn, role=role)
@@ -47,10 +47,14 @@ class registerHandler(BaseHandler):
 
     @tornado.web.authenticated
     def post(self):  # Post the result of chosen project
-        res = self.get_argument("result")
+        res = self.get_argument("res")
+        pref = int(self.get_argument("pref"))
         uid = int(tornado.escape.xhtml_escape(self.current_user))
-		user = userDB(uid)
-        user.register(res)
+        user = userDB(uid)
+        data = user.query()['registed'].split(',')
+        data[pref] = res
+        data = ','.join(data)
+        user.register(data)
         self.write('success')
 
 
@@ -59,41 +63,61 @@ class quitProj(BaseHandler):
     def post(self):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
         id = int(self.get_argument("id"))
-		user = userDB(uid)
-		registed = user.query()['registed'].split(',')
-		if id in registed:
-		    user.quitProj(id, registed.index(str(id))
-			self.write("success")
-		else:
-		    self.write("You havn't registered the project")
+        user = userDB(uid)
+        registed = user.query()['registed'].split(',')
+        if str(id) in registed:
+            registed[registed.index(str(id))] = 'n'
+            user.register(','.join(registed))
+            self.write("success")
+        else:
+            self.write("You havn't registered the project")
 
 
 class registedHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
-		user = userDB(uid)
+        user = userDB(uid)
         res = user.query()
         role = res['role']
         u_name = user.u_name
+        registed = res['registed'].split(',')
+        statstr = []
+        projid=[]
+        stat = res['stat'].split(',')
+        for i in range(3):
+            if registed[i]=='n':
+                registed[i] = 'None'
+                projid.append(0)
+            else:
+                proj = projectDB(int(registed[i])).query()
+                registed[i] = proj['title']
+                projid.append(proj['id'])
+            if int(stat[i]) == 0:
+                statstr.append('Not chosen yet')
+            if int(stat[i]) == 1:
+                statstr.append('Need verified by instructor')
+            if int(stat[i]) == 2:
+                statstr.append('Succeed')
+            stat[i] = int(stat[i])
         if role=='admin':
             self.render('403.html', u_name=u_name, role=role)
         else:
-            self.render("registed.html", registed=res['registed'], u_name=u_name,
-                    stat=res['stat'], role=role)
+            self.render("registed.html", registed=registed, u_name=u_name,
+                    stat=stat, role=role, statstr=statstr, projid=projid)
 
 
 class joinGroupHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
-		user = userDB(uid)
-		u_name = user.u_name
+        user = userDB(uid)
+        u_name = user.u_name
         res = user.query()
         stat = res['grouped']
         role = res['role']
         res = user.allUsers()
-        stat = user.groupStat(uid)
+        stat = user.groupStat()
         groups = groupDB().allGroups()
         l = len(groups)
         self.render("groups.html", stat=stat, users=res, u_name=u_name, groups=groups, l=l, role=role)
@@ -129,6 +153,18 @@ class exportHandler(BaseHandler):
         pyxlsx.export(data, output)
 
 
+class createProjectHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        uid = int(tornado.escape.xhtml_escape(self.current_user))
+        role = userDB(uid).query()['role']
+        u_name = self.get_secure_cookie('u_name').decode('UTF-8')
+        if role == 'stu':
+            self.render('403.html', u_name=u_name, role=role)
+        else:
+            self.render('create_project.html', u_name=u_name, role=role)
+
+
 if __name__ == "__main__":
     tornado.options.parse_command_line()
     settings = {
@@ -149,6 +185,7 @@ if __name__ == "__main__":
         (r"/option", optionHandler),  # for viewing the account status
         (r"/export", exportHandler),  # for exporting the choosing data
         (r"/forbbiden", forbiddenHandler),
+        (r"/createproject", createProjectHandler)
     ], debug=True, **settings)
     # Todo The create project page
     http_server = tornado.httpserver.HTTPServer(application)

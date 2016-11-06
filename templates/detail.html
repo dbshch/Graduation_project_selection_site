@@ -7,6 +7,36 @@
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="../static/detail.css">
+    <script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#post").click(function(){
+                var chosen;
+                for (var i=1;i<4;i++){
+                    if ($('#inlineRadio'+i).is(":checked")){
+                        chosen = i - 1;break;
+                     }
+                }
+                $.post("/register",
+                    {
+                        res: {{ i }},
+                        pref: chosen
+                    },
+                    function(data,status){
+                    alert(data);
+                });
+            });
+            $("#quit").click(function(){
+                $.post("/quit",
+                    {
+                        id: {{ i }}
+                    },
+                    function(data,status){
+                    alert(data);
+                });
+            });
+        });
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-inverse" role="navigation">
@@ -46,7 +76,7 @@
                         <li><a href="#">Create a Group</a></li>
                         {% else %}
                         <li class="divider"></li>
-                        <li><a href="#">Create a Project</a></li>
+                        <li><a href="/createproject">Create a Project</a></li>
                         {% end %}
                     </ul>
                 </li>
@@ -77,28 +107,29 @@
                                     <h4 class="modal-title" id="myModalLabel">Are you sure to select the project?</h4>
                                 </div>
                                 <div class="modal-body">
+                                    The selected project can be managed in your profile.
                                     <p>Select the project as:</p>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Preference 1
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">Preference 2
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" disabled>Preference 3
-                                    </label>
++                                    <label class="radio-inline">
++                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>Preference 1
++                                    </label>
++                                    <label class="radio-inline">
++                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">Preference 2
++                                    </label>
++                                    <label class="radio-inline">
++                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">Preference 3
++                                    </label>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Confirm</button>
-                                </div>
+                                    <button type="button" class="btn btn-primary" id="post">Confirm</button>
+                                </div>_
                             </div>
                         </div>
                     </div>
                 </div>
                 {% else %}
                 <div class="project-submit">
-                    <button class="btn btn-primary">Quit the Project</button>
+                    <button class="btn btn-primary" id="quit">Quit the Project</button>
                 </div>
                 {% end %}
                 <div class="peoples-in">
