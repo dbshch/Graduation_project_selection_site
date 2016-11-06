@@ -178,7 +178,7 @@ class groupDB(dbFunction):
         return self.dataQuery(("SELECT * FROM groups"))
 
     def all_users(self):
-        res = [self.dataQuery(("SELECT leader_id FROM groups WHERE id=%d" % self.uid))[0]['leader_id']]
+        res = [self.dataQuery(("SELECT leader_id FROM groups WHERE id=%d" % self.id))[0]['leader_id']]
         for i in self.dataQuery(("SELECT user_id FROM groups WHERE id=%d" % self.id))[0]['user_id'].split(','):
             res.append(i)
         return res
@@ -233,10 +233,10 @@ class projectDB(dbFunction):
         op = ("UPDATE projects SET wish%d='%s' where id=%d" % (seq, res, self.id))
         self.dataUpdate(op)
 
-    def newProject(self, title, detial, img, sponsor=''):
+    def newProject(self, title, detail, img, sponsor=''):
         op = (
             "INSERT INTO projects VALUES (%d, '%s', '%s', '%s', '%s', '', '', '')" % (
-            self.id, title, img, sponsor, detial))
+            self.id, title, img, sponsor, detail))
         self.dataUpdate(op)
 
     def deleteProject(self):

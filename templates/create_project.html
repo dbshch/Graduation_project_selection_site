@@ -9,6 +9,21 @@
     <link rel="stylesheet" href="../static/global.css">
     <link href="../bower_components/bootstrap-markdown-editor/dist/css/bootstrap-markdown-editor.css" rel="stylesheet">
     <link rel="stylesheet" href="../static/create_project.css">
+    <script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#create").click(function(){
+                $.post("/createproject",
+                    {
+                        title: $("#title").val(),
+                        detail: $("#myEditor").val()
+                    },
+                    function(data,status){
+                    alert(data);
+                });
+            });
+        });
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-inverse" role="navigation">
@@ -50,10 +65,10 @@
 <div class="contents create-project">
     <div class="input-group input-group-lg input-title">
         <span class="input-group-addon">Title</span>
-        <input type="text" class="form-control" placeholder="Project Name">
+        <input type="text" class="form-control" placeholder="Project Name" id="title">
     </div>
     <textarea class="input-contents" name="text" id="myEditor"># Test</textarea>
-    <button type="button" class="btn btn-primary btn-create">Create</button>
+    <button type="button" class="btn btn-primary btn-create" id="create">Create</button>
 </div>
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>

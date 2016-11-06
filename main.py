@@ -51,11 +51,15 @@ class registerHandler(BaseHandler):
         pref = int(self.get_argument("pref"))
         uid = int(tornado.escape.xhtml_escape(self.current_user))
         user = userDB(uid)
-        data = user.query()['registed'].split(',')
-        data[pref] = res
-        data = ','.join(data)
-        user.register(data)
-        self.write('success')
+        data = user.query()
+        if data['grouped'] == 'y':
+            self.write('You need to ask team leader to register the project')
+        else:
+            data = data['registed'].split(',')
+            data[pref] = res
+            data = ','.join(data)
+            user.register(data)
+            self.write('success')
 
 
 class quitProj(BaseHandler):
@@ -64,13 +68,17 @@ class quitProj(BaseHandler):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
         id = int(self.get_argument("id"))
         user = userDB(uid)
-        registed = user.query()['registed'].split(',')
-        if str(id) in registed:
-            registed[registed.index(str(id))] = 'n'
-            user.register(','.join(registed))
-            self.write("success")
+        res = user.query()
+        if res['grouped']=='y':
+            self.write('You need to ask team leader to quit the project')
         else:
-            self.write("You havn't registered the project")
+            registed = res['registed'].split(',')
+            if str(id) in registed:
+                registed[registed.index(str(id))] = 'n'
+                user.register(','.join(registed))
+                self.write("success")
+            else:
+                self.write("You havn't registered the project")
 
 
 class registedHandler(BaseHandler):
@@ -163,6 +171,20 @@ class createProjectHandler(BaseHandler):
             self.render('403.html', u_name=u_name, role=role)
         else:
             self.render('create_project.html', u_name=u_name, role=role)
+
+    @tornado.web.authenticated
+    def post(self):
+        uid = int(tornado.escape.xhtml_escape(self.current_user))
+        role = userDB(uid).query()['role']
+        u_name = self.get_secure_cookie('u_name').decode('UTF-8')
+        if role == 'stu':
+            self.render('403.html', u_name=u_name, role=role)
+        else:
+            title = self.get_argument("title")
+            detail = self.get_argument("detail")
+            img = "img2.jpg"
+            projectDB().newProject(title, detail, img)
+            self.write("success")
 
 
 if __name__ == "__main__":
