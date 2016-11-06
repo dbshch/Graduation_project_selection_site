@@ -68,7 +68,33 @@
             <div class="col-md-4">
                 {% if isIn==False %}
                 <div class="project-submit">
-                    <button class="btn btn-primary">Register the Project</button>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#register-modal">Register the Project</button>
+                    <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Are you sure to select the project?</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Select the project as:</p>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Preference 1
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">Preference 2
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" disabled>Preference 3
+                                    </label>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Confirm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 {% else %}
                 <div class="project-submit">

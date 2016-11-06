@@ -17,8 +17,8 @@ class WelcomeHandler(BaseHandler):
     def get(self):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
         u_name = self.get_secure_cookie('u_name').decode('UTF-8')
-        projs = allProjects()
-        role = queryUser(uid)['role']
+        projs = projectDB().allProjects()
+        role = userDB(uid).queryUser()['role']
         self.render('index.html', u_name=u_name, projs=projs, role=role)
         # TODO: the sort and filter functions; The way to show brief view of projects
 
@@ -26,11 +26,12 @@ class WelcomeHandler(BaseHandler):
 class detailHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, id):
-        proj = queryProjects(id)
+        proj = projectDB(id).query()
         proj['detail'] = proj['detail'].split('\n')
         uid = int(tornado.escape.xhtml_escape(self.current_user))
-        isIn = id in queryUser(uid)['registed']
-        role = queryUser(uid)['role']
+		res = userDB(uid).query()
+        isIn = id in res['registed']
+        role = res['role']
         self.render("detail.html", i=id, proj=proj, u_name=self.get_secure_cookie('u_name'), isIn=isIn, role=role)
         # TODO quit and register button
 
@@ -41,19 +42,15 @@ class registerHandler(BaseHandler):
         new = self.get_argument("item")  # the new project to be chosen
         new = new.split(";")
         uid = int(tornado.escape.xhtml_escape(self.current_user))
-        role = queryUser(uid)['role']
+        role = userDB(uid).query()['role']
         self.render("register.html", new=new, role=role)
 
     @tornado.web.authenticated
     def post(self):  # Post the result of chosen project
         res = self.get_argument("result")
         uid = int(tornado.escape.xhtml_escape(self.current_user))
-        group_stat = queryUser(uid)
-        if (group_stat['grouped'] == 'l'):
-            group_member = queryGroup(int(group_stat['group_id']))
-            for m in group_member:
-                updateUser(int(m), res)
-        updateUser(uid, res)
+		user = userDB(uid)
+        user.register(res)
         self.write('success')
 
 
@@ -62,17 +59,23 @@ class quitProj(BaseHandler):
     def post(self):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
         id = int(self.get_argument("id"))
-        wish_i = int(self.get_argument("wish_i"))
-        quitProj(uid, id, wish_i)
+		user = userDB(uid)
+		registed = user.query()['registed'].split(',')
+		if id in registed:
+		    user.quitProj(id, registed.index(str(id))
+			self.write("success")
+		else:
+		    self.write("You havn't registered the project")
 
 
 class registedHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
-        res = queryUser(uid)
-        role = queryUser(uid)['role']
-        u_name = self.get_secure_cookie("u_name").decode("UTF-8")
+		user = userDB(uid)
+        res = user.query()
+        role = res['role']
+        u_name = user.u_name
         if role=='admin':
             self.render('403.html', u_name=u_name, role=role)
         else:
@@ -84,23 +87,20 @@ class joinGroupHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
-        u_name = self.get_secure_cookie('u_name').decode('UTF-8')
-        res = queryUser(uid)
+		user = userDB(uid)
+		u_name = user.u_name
+        res = user.query()
         stat = res['grouped']
         role = res['role']
-        res = allUsers()
-        stat = groupStat(uid)
-        groups = allGroups()
+        res = user.allUsers()
+        stat = user.groupStat(uid)
+        groups = groupDB().allGroups()
         l = len(groups)
         self.render("groups.html", stat=stat, users=res, u_name=u_name, groups=groups, l=l, role=role)
 
     @tornado.web.authenticated
     def post(self):
-        uid = int(tornado.escape.xhtml_escape(self.current_user))
-        u_name = self.get_secure_cookie('u_name').decode('UTF-8')
-        res = allUsers()
-        stat = groupStat(uid)
-        self.render("groups.html", users=res, u_name=u_name)
+        pass
 
 
 class forbiddenHandler(BaseHandler):
@@ -108,14 +108,14 @@ class forbiddenHandler(BaseHandler):
     def get(self):
         u_name = self.get_secure_cookie('u_name').decode('UTF-8')
         uid = int(tornado.escape.xhtml_escape(self.current_user))
-        role = queryUser(uid)['role']
+        role = userDB(uid).query()['role']
         self.render('403.html', u_name=u_name, role=role)
 
 class exportHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
-        role = queryUser(uid)['role']
+        role = userDB(uid).query()['role']
         u_name = self.get_secure_cookie('u_name').decode('UTF-8')
         if role=='stu':
             self.render('403.html', u_name=u_name, role=role)
