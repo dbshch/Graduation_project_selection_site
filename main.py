@@ -208,6 +208,11 @@ if __name__ == "__main__":
         (r"/export", exportHandler),  # for exporting the choosing data
         (r"/forbbiden", forbiddenHandler),
         (r"/createproject", createProjectHandler)
+        # ----------------------------------------
+        # If in DEVELOP and want simple static file handler (without nginx), uncomment them
+        #(r'/bower_components/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "bower_components")}),
+        #(r'/static/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static")})
+        # ----------------------------------------
     ], debug=True, **settings)
     # Todo The create project page
     http_server = tornado.httpserver.HTTPServer(application)
