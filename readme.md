@@ -14,6 +14,13 @@ pip install tornado openpyxl
 ```
 Then download the mysql connector from http://dev.mysql.com/downloads/connector/python/ and install as the orcale's instruction.
 
+Actually, you can download the source code and install it by
+
+```bash
+cd /path/to/the/source/code
+pip install .
+```
+
 ### Nginx
 
 See the nginx.conf as the sample of configuration and config the /etc/nginx/nginx.conf file as needed
@@ -24,4 +31,4 @@ Change directory to the root of the program, and run
 ```
 python main.py
 ```
-Then visit the site configured as your nginx.conf. (In this sample, visit localhost:13000)
+Then visit the site configured as your nginx.conf. (In this sample, visit localhost:8080)
