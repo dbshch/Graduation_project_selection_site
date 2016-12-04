@@ -156,9 +156,41 @@ class exportHandler(BaseHandler):
 
     @tornado.web.authenticated
     def post(self):
-        data = {}
+        data = []
         output = self.get_argument('output')
-        pyxlsx.export(data, output)
+        if not output:
+            self.write("no file name")
+            return
+        if '/' in output:
+            self.write("illegal file name")
+            return
+        res = projectDB().allProjects()
+        for i in range(len(res)):
+            all_grp = []
+            for k in range(3):
+                w_group = []
+                groups = res[i]['wish' + str(k+1)].split(',')
+                for group in groups:
+                    if not group:
+                        w_group.append([])
+                        continue
+                    g_usr = []
+                    #print(group)
+                    if int(group)>100:
+                        g_usr.append("%s %s" % (group, userDB(group).query()['u_name']))
+                    else:
+                        ids = groupDB(group).all_users()
+                        for id in ids:
+                            g_usr.append("%s %s" % (id, userDB(id).query()['u_name']))
+                    w_group.append(g_usr)
+                all_grp.append(w_group)
+            data.append({"i":i+1,'title':res[i]['title'],'groups':all_grp})
+        if '.' in output:
+            pyxlsx.export(data, "exported/%s" % output)
+            self.redirect('/exported/%s' % output)
+        else:
+            pyxlsx.export(data, "exported/%s.xlsx" % output)
+            self.redirect('/exported/%s.xlsx' % output)
 
 
 class createProjectHandler(BaseHandler):

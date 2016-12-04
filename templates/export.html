@@ -54,7 +54,13 @@
             </ul>
         </div>
         <div class="col-md-10 col-md-offset-2">
-
+        <form role="form" action="/export" method="post">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Export data</label>
+                        <input class="form-control" name="output" id="exampleInputEmail1" placeholder="Enter export file name">
+                    </div>
+                    <button type="submit" value="Sign in" class="btn btn-default btn-login-submit">Export</button>
+                </form>
         </div>
     </div>
 </div>

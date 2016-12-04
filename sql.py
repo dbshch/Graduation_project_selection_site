@@ -26,6 +26,7 @@ class dbFunction(ippDB):
         ippDB.__init__(self)
 
     def dataQuery(self, qry):
+        k=0
         self.cursor.execute(qry)
         t = []
         for i in self.cursor:
@@ -85,7 +86,7 @@ class userDB(dbFunction):
         old = old.split(',')
         p = []
         for i in range(3):
-            if old[i]=='n':
+            if old[i] == 'n':
                 p.append(0)
             else:
                 p.append(projectDB(old[i]))
@@ -94,11 +95,23 @@ class userDB(dbFunction):
             my_group = groupDB(self.group_id).all_users()
             for member in my_group:
                 mem = userDB(member)
-                mem.register_helper(p, res, old)
+                mem.register_helper(res, old)
+            for i in range(3):
+                if old[i] == res[i]:
+                    continue
+                if res[i] != 'n':
+                    p[i] = projectDB(res[i])
+                    p[i].newWish(self.group_id, i + 1)
         else:
-            self.register_helper(p, res, old)
+            self.register_helper(res, old)
+            for i in range(3):
+                if old[i] == res[i]:
+                    continue
+                if res[i] != 'n':
+                    p[i] = projectDB(res[i])
+                    p[i].newWish(self.uid, i + 1)
 
-    def register_helper(self, p, res, old):
+    def register_helper(self, res, old):
         stat = self.query()['stat'].split(',')
         for i in range(3):
             if old[i] == res[i]:
@@ -107,8 +120,6 @@ class userDB(dbFunction):
                 self.quitProj(old[i], i + 1)
                 stat[i] = str(0)
             if res[i] != 'n':
-                p[i] = projectDB(res[i])
-                p[i].newWish(self.uid, i + 1)
                 stat[i] = str(1)
         res = ','.join(res)
         stat = ','.join(stat)
@@ -132,7 +143,12 @@ class userDB(dbFunction):
         qry = ("SELECT wish%d FROM projects WHERE id = %d" % (wish_i, id))
         res = self.dataQuery(qry)[0]['wish%d' % wish_i]
         res = res.split(",")
-        res.remove(str(self.uid))
+        gid = str(self.group_id)
+        if self.group_id:
+            if gid in res:
+                res.remove(gid)
+        else:
+            res.remove(str(self.uid))
         res = ','.join(res)
         op = ("UPDATE projects SET wish%d='%s' where id=%d" % (wish_i, res, id))
         self.dataUpdate(op)
@@ -236,7 +252,7 @@ class projectDB(dbFunction):
     def newProject(self, title, detail, img, sponsor=''):
         op = (
             "INSERT INTO projects VALUES (%d, '%s', '%s', '%s', '%s', '', '', '')" % (
-            self.id, title, img, sponsor, detail))
+                self.id, title, img, sponsor, detail))
         self.dataUpdate(op)
 
     def deleteProject(self):

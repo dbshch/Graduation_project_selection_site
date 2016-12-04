@@ -1,5 +1,6 @@
 import tornado.options
 from sql import *
+import re
 
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -14,17 +15,22 @@ class LoginHandler(BaseHandler):  # Todo Jaccount login
 
     def post(self):
         uid = self.get_argument('username')
-        user = userDB(uid)
-        pwd = self.get_argument('password')
         next = self.get_argument('next')
-        # salt = binascii.hexlify(os.urandom(20)).decode()
-        res = user.check(pwd)
+        self.get_argument('s')
+
+        if not uid.isdigit():
+            self.redirect(next)
+        else:
+            user = userDB(uid)
+            pwd = self.get_argument('password')
+            # salt = binascii.hexlify(os.urandom(20)).decode()
+            res = user.check(pwd)
     
-        if res:
-            u_name = user.query()['u_name']
-            self.set_secure_cookie("u_name", u_name)
-            self.set_secure_cookie("username", str(uid))
-        self.redirect(next)
+            if res:
+                u_name = user.query()['u_name']
+                self.set_secure_cookie("u_name", u_name)
+                self.set_secure_cookie("username", str(uid))
+            self.redirect(next)
 
 
 class LogoutHandler(BaseHandler):
