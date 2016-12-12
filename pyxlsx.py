@@ -1,3 +1,4 @@
+# coding=UTF-8
 from openpyxl import Workbook
 from openpyxl.styles import Border, Side, PatternFill, Font, GradientFill, Alignment
 import datetime

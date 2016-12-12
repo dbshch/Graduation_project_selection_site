@@ -1,3 +1,4 @@
+# coding=UTF-8
 import tornado.options
 from sql import *
 import re
