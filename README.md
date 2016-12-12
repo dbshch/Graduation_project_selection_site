@@ -32,3 +32,17 @@ Change directory to the root of the program, and run
 python main.py
 ```
 Then visit the site configured as your nginx.conf. (In this sample, visit localhost:8080)
+
+***
+
+### Development guidelines
+
+#### Encoding
+
+To guarantee UTF-8 compliance on different platforms, especially for Python source files containing non-ASCII characters, please add the following comment to the beginning of .py files:
+
+```python
+  # coding=UTF-8
+```
+
+See [PEP 263](https://www.python.org/dev/peps/pep-0263/) for details.
