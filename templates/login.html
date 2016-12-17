@@ -29,19 +29,8 @@
                     <a href="joinGroup">Groups</a>
                 </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Not logged in<span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="option">My Profile</a></li>
-                        <li><a href="#">My Project</a></li>
-                        <li><a href="#">Log out</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Create a Group</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Create a Project</a></li>
-                    </ul>
-                </li>
+            <ul class="nav navbar-nav navbar-right navbar-notlogin">
+                <li class="dropdown"><a href="#">Not logged in</a></li>
             </ul>
         </div>
     </div>
@@ -51,10 +40,6 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <form role="form" action="/login" method="post">
-                    <!-- <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>-->
                     <div class="form-group">
                         <label for="exampleInputEmail1">Student ID</label>
                         <input class="form-control" name="username" id="exampleInputEmail1" placeholder="Enter Student ID">
@@ -66,16 +51,6 @@
                     <div class="form-group" style="display: none">
                         <input name="next" class="form-control" value="{{ next }}">
                     </div>
-                    <!--<div class="form-group">
-                        <label for="exampleInputFile">File input</label>
-                        <input type="file" id="exampleInputFile">
-                        <!--<p class="help-block">Example block-level help text here.</p>-->
-                    <!--</div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox">Agree some licence
-                        </label>
-                    </div>-->
                     <button type="submit" value="Sign in" class="btn btn-default btn-login-submit">Sign in</button>
                 </form>
             </div>
