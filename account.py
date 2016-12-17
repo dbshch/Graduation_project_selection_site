@@ -16,7 +16,7 @@ class LoginHandler(BaseHandler):  # Todo Jaccount login
     def post(self):
         uid = self.get_argument('username')
         next = self.get_argument('next')
-        self.get_argument('s')
+        #self.get_argument('s')
 
         if not uid.isdigit():
             self.redirect(next)
@@ -25,7 +25,7 @@ class LoginHandler(BaseHandler):  # Todo Jaccount login
             pwd = self.get_argument('password')
             # salt = binascii.hexlify(os.urandom(20)).decode()
             res = user.check(pwd)
-    
+
             if res:
                 u_name = user.query()['u_name']
                 self.set_secure_cookie("u_name", u_name)
