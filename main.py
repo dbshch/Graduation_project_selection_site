@@ -8,9 +8,10 @@ import func
 import os
 import pyxlsx
 from account import *
+from env import *
 
-define("port", default=8080, help="run on the given port", type=int)
-
+env = get_env()
+define("port", default=int(env['port']), help="run on the given port", type=int)
 
 class WelcomeHandler(BaseHandler):
     @tornado.web.authenticated

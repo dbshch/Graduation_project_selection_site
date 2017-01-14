@@ -1,11 +1,13 @@
 import mysql.connector
 import copy
+from env import *
 
+env = get_env()
 config = {
-    'user': 'root',
-    'password': 'chuibi',
+    'user': str(env['user']),
+    'password': str(env['password']),
     'host': '127.0.0.1',
-    'database': 'ipp',
+    'database': str(env['database']),
     'raise_on_warnings': True,
 }
 

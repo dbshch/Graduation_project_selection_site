@@ -1,0 +1,7 @@
+# database
+database: ipp
+user: root
+password: 961228
+
+# dev-server
+port: 8082

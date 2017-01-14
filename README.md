@@ -1,17 +1,23 @@
 # Graduation_project_selection_site
-The site for graduation project selection
 
-## How to deploy
+The site for graduation project selection in UM-SJTU JI.
 
-The site uses Python and Nginx as back-end and MariaDB(MySQL) as the database, javascript and html as the front-end.
+## Dependencies
 
-### Python
+We need
 
-The needed packages of python are: Tornado, mysql.connector, openpyxl
-To install the packages using pip to install tornado and openpyxl
+- python3
+- Tornado
+- mysql.connector
+- openpyxl
+- PyYaml
+
+To install them,
+
 ```python
-pip install tornado openpyxl
+pip install tornado openpyxl PyYaml
 ```
+
 Then download the mysql connector from http://dev.mysql.com/downloads/connector/python/ and install as the orcale's instruction.
 
 Actually, you can download the source code and install it by
@@ -21,14 +27,31 @@ cd /path/to/the/source/code
 pip install .
 ```
 
-### Nginx
+## Run
 
-See the nginx.conf as the sample of configuration and config the /etc/nginx/nginx.conf file as needed
+Firstly, clone the repo. We do not need `npm` now since dependencies have been added into this repo now (will be removed).
 
-### Run
+```
+git clone https://github.com/dbshch/Graduation_project_selection_site.git
+cd Graduation_project_selection_site
+# npm install
+```
 
-Change directory to the root of the program, and run
+Secondly, specify your database and localhost config.
+
+```
+cp config.yaml.example config.yaml
+vim config.yaml
+```
+
+and type your own config. Now, run the server
+
 ```
 python main.py
 ```
-Then visit the site configured as your nginx.conf. (In this sample, visit localhost:8080)
+
+and visit <http://localhost:8080>. The port is set in `config.yaml`.
+
+## Deployment
+
+See the nginx.conf as the sample of configuration and config the /etc/nginx/nginx.conf file as needed.
