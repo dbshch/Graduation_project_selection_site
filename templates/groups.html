@@ -58,12 +58,12 @@
 <div class="contents groups">
     <div class="container-fluid">
         <table class="table table-striped">
-            <thead>
+            <thead class="table-head">
             <tr>
-                <td>Group No.</td>
-                <td>Group Leader</td>
-                <td>Group Members</td>
-                <td></td>
+              <td class="gro-no">Group No.</td>
+              <td class="gro-led">Group Leader</td>
+              <td class="gro-mem">Group Members</td>
+              <td>Join / Leave</td>
             </tr>
             </thead>
             <tbody>
@@ -72,16 +72,45 @@
                 <td>{{ i+1 }}</td>
                 <td>{{ groups[i]['leader'] }}</td>
                 <td>{{ groups[i]['users'] }}</td>
-                {% if stat=='n' and role=='stu' %}
                 <td>
-                    {% if groups[i]['isFull']==False %}
-                    <button class="btn btn-default">Request to Join</button>
-                    {% else %}
-                    <button class="btn btn-default">The group is full</button>
-                    {% end %}
+                          <!--下面有三个button，但是我不知道该出现哪个button的判断条件怎么写-->
+                  <button class="btn btn-success" data-toggle="modal" data-target="#join-modal">Join</button>
+                  <div class="modal fade" id="join-modal">
+                    <div class="modal-dialog modal-sm">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        </div>
+                        <div class="modal-body">
+                          Are you sure to join the group?
+                        </div>
+                        <div class="modal-footer" align="center">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary" id="join">Confirm</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn btn-success" disabled="disabled">Full</button>
+                  <button class="btn btn-warning" data-toggle="modal" data-target="#leave-modal">Leave</button>
+                  <div class="modal fade" id="leave-modal">
+                    <div class="modal-dialog modal-sm">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        </div>
+                        <div class="modal-body">
+                          Are you sure to leave the group?
+                        </div>
+                        <div class="modal-footer" align="center">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary" id="leave">Confirm</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </td>
-                {% end %}
-            </tr>
+              </tr>
             {% end %}
             </tbody>
         </table>
