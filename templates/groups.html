@@ -73,13 +73,13 @@
                 <td>{{ groups[i]['leader'] }}</td>
                 <td>{{ groups[i]['users'] }}</td>
                 <td>
-                          <!--下面有三个button，但是我不知道该出现哪个button的判断条件怎么写-->
                   <button class="btn btn-success" data-toggle="modal" data-target="#join-modal">Join</button>
                   <div class="modal fade" id="join-modal">
-                    <div class="modal-dialog modal-sm">
+                    <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
                           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                          <h4>Confirmation</h4>
                         </div>
                         <div class="modal-body">
                           Are you sure to join the group?
@@ -94,10 +94,11 @@
                   <button class="btn btn-success" disabled="disabled">Full</button>
                   <button class="btn btn-warning" data-toggle="modal" data-target="#leave-modal">Leave</button>
                   <div class="modal fade" id="leave-modal">
-                    <div class="modal-dialog modal-sm">
+                    <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
                           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                          <h4>Confirmation</h4>
                         </div>
                         <div class="modal-body">
                           Are you sure to leave the group?
