@@ -1,3 +1,30 @@
 .groups {
     max-width: 1000px;
 }
+.gro-no{
+  width:150px;
+}
+.gro-led{
+  width:250px;
+}
+.gro-mem{
+  width:400px;
+}
+
+.table-head{
+  font-size: large;
+}
+
+/*modal*/
+.modal-header{
+  border-bottom: 0px;
+}
+.modal-body{
+  text-align: center;
+  font-size: 26px;
+  padding:30px 15px 45px;
+}
+.modal-footer{
+  border-top: 0px;
+  text-align: center;
+}
