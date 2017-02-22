@@ -56,6 +56,40 @@
 <div class="projects">
     <div class="single-project">
         <div class="container">
+          <div class="sort-filter">
+            <div class="row">
+              <div class="col-md-9 col-md-offset-2 filter">
+                <label class="title-filter">SELECT :</label>
+                <ul class="options-filter">
+                  <li href="#" class="btn">All</li>
+                  <li href="#" class="btn">Sort 1</li>
+                  <li href="#" class="btn active">Sort 2</li>
+                  <li href="#" class="btn">Sort 3</li>
+                </ul>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-9 col-md-offset-2 sort">
+                <ul class="options-sort pull-right">
+                  <li>
+                    <a href="#" class="sort-opt">Upload Date</a>
+                    <span class="sort-divider">|</span>
+                  </li>
+                  <li>
+                    <a href="#" class="sort-opt active">View Count</a>
+                    <span class="sort-divider">|</span>
+                  </li>
+                  <li>
+                    <a href="#" class="sort-opt">Sort 3</a>
+                    <span class="sort-divider">|</span>
+                  </li>
+                  <li>
+                    <a href="#" class="sort-opt">Sort 4</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
             {% for item in projs %}
             <div class="row">
                 <div class="col-md-4 col-md-offset-2">
