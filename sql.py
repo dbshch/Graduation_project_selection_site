@@ -1,6 +1,6 @@
 import mysql.connector
 import copy
-from env import *
+from util.env import *
 
 env = get_env()
 config = {
@@ -48,6 +48,13 @@ class userDB(dbFunction):
         if res:
             self.group_id = int(res[0]['group_id'])
             self.u_name = res[0]['u_name']
+        else:
+            self.u_name = ''
+
+    def validUser(self):
+        if self.u_name:
+            return True
+        return False
 
     def check(self, pwd):
         qry = ("SELECT pwd FROM users WHERE id = %d" % self.uid)
@@ -69,7 +76,7 @@ class userDB(dbFunction):
 
     def isLeader(self):
         res = self.dataQuery(("SELECT grouped FROM users WHERE id=%d" % self.uid))
-        if res[0][0] == "l":
+        if res[0]['grouped'] == "l":
             return True
         return False
 
@@ -159,7 +166,7 @@ class userDB(dbFunction):
         qry = self.dataQuery(("SELECT users, user_id FROM groups WHERE id=%d" % id))[0]
         users = qry['users'].split(',')
         ids = qry['user_id'].split(',')
-        ids.append(self.uid)
+        ids.append(str(self.uid))
         users.append(self.u_name)
         ids = ','.join(ids)
         users = ','.join(users)
@@ -167,14 +174,14 @@ class userDB(dbFunction):
         self.dataUpdate(op)
 
     def quitGroup(self):
-        qry = self.dataQuery(("SELECT users, user_id FROM groups WHERE id=%d" % id))[0]
+        qry = self.dataQuery(("SELECT users, user_id FROM groups WHERE id=%d" % self.group_id))[0]
         users = qry['users'].split(',')
         ids = qry['user_id'].split(',')
         ids.remove(str(self.uid))
         users.remove(self.u_name)
         ids = ','.join(ids)
         users = ','.join(users)
-        op = ("UPDATE groups SET users='%s', user_id='%s' WHERE id=%d" % (users, ids, id))
+        op = ("UPDATE groups SET users='%s', user_id='%s' WHERE id=%d" % (users, ids, self.group_id))
         self.dataUpdate(op)
 
     def createGroup(self):
@@ -236,9 +243,14 @@ class projectDB(dbFunction):
     def allProjects(self):
         return self.dataQuery(("SELECT * FROM projects"))
 
+    def view(self):
+        viewed = int(self.query()['views']) + 1
+        op = ("UPDATE projects SET views=%d WHERE id=%d" % (viewed, self.id))
+        self.dataUpdate(op)
+
     def query(self):
         return self.dataQuery(
-            ("SELECT * FROM projects WHERE id = %d" % int(self.id)))[0]
+            ("SELECT * FROM projects WHERE id = %d" % self.id))[0]
 
     def newWish(self, userid, seq):
         qry = ("SELECT wish%d FROM projects WHERE id = %d" % (seq, self.id))
@@ -258,5 +270,15 @@ class projectDB(dbFunction):
         self.dataUpdate(op)
 
     def deleteProject(self):
+        qry = self.query()
+        for i in range(1,4):
+            user = qry['wish' + str(i)]
+            if user:
+                db = userDB(user)
+                if not db.validUser():
+                    db = userDB(groupDB(user).leader())
+                registed = db.query()['registed'].split(',')
+                registed[i - 1] = 'n'
+                db.register(','.join(registed))
         op = ("DELETE FROM projects WHERE id=%d" % self.id)
         self.dataUpdate(op)

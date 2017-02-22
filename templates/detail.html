@@ -35,6 +35,15 @@
                     alert(data);
                 });
             });
+            $("#delete").click(function(){
+                $.post("/deleteProj",
+                    {
+                        id: {{ i }}
+                    },
+                    function(data,status){
+                    alert(data);
+                });
+            });
         });
     </script>
 </head>
@@ -109,15 +118,15 @@
                                 <div class="modal-body">
                                     The selected project can be managed in your profile.
                                     <p>Select the project as:</p>
-+                                    <label class="radio-inline">
-+                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>Preference 1
-+                                    </label>
-+                                    <label class="radio-inline">
-+                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">Preference 2
-+                                    </label>
-+                                    <label class="radio-inline">
-+                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">Preference 3
-+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>Preference 1
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">Preference 2
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">Preference 3
+                                    </label>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -136,6 +145,10 @@
                     <!--<p>A group has chosen this project.</p>-->
                 </div>
             </div>
+            {% else %}
+                <div class="project-submit">
+                    <button class="btn btn-primary" id="delete">Delete the Project</button>
+                </div>
             {% end %}
         </div>
     </div>

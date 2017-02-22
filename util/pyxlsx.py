@@ -1,7 +1,10 @@
 from openpyxl import Workbook
 from openpyxl.styles import Border, Side, PatternFill, Font, GradientFill, Alignment
 import datetime
-
+import tornado.httpserver
+import tornado.ioloop
+import tornado.web
+from controller.account import *
 
 def style_range(ws, cell_range, border=Border(), fill=None, font=None, alignment=None):
     top = Border(top=border.top)
@@ -72,7 +75,55 @@ def export(data, output):
 
     wb.save(output)
 
+class exportHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        uid = int(tornado.escape.xhtml_escape(self.current_user))
+        role = userDB(uid).query()['role']
+        u_name = self.get_secure_cookie('u_name').decode('UTF-8')
+        if role=='stu':
+            self.render('403.html', u_name=u_name, role=role)
+        else:
+            self.render('export.html', u_name=u_name, role=role)
 
+    @tornado.web.authenticated
+    def post(self):
+        data = []
+        output = self.get_argument('output')
+        if not output:
+            self.write("no file name")
+            return
+        if '/' in output:
+            self.write("illegal file name")
+            return
+        res = projectDB().allProjects()
+        for i in range(len(res)):
+            all_grp = []
+            for k in range(3):
+                w_group = []
+                groups = res[i]['wish' + str(k+1)].split(',')
+                for group in groups:
+                    if not group:
+                        w_group.append([])
+                        continue
+                    g_usr = []
+                    #print(group)
+                    if int(group)>100:
+                        g_usr.append("%s %s" % (group, userDB(group).query()['u_name']))
+                    else:
+                        ids = groupDB(group).all_users()
+                        for id in ids:
+                            g_usr.append("%s %s" % (id, userDB(id).query()['u_name']))
+                    w_group.append(g_usr)
+                all_grp.append(w_group)
+            data.append({"i":i+1,'title':res[i]['title'],'groups':all_grp})
+        if '.' in output:
+            export(data, "exported/%s" % output)
+            self.redirect('/exported/%s' % output)
+        else:
+            export(data, "exported/%s.xlsx" % output)
+            self.redirect('/exported/%s.xlsx' % output)
+            
 if __name__ == "__main__":
     data = [{'i': 1, 'title': 'Freesense-Backlight Panel Defect Recognition', 'groups': [[['吴承刚']], [[]], [[]]]}]
     data.append({'i': 2, 'title': 'Recognition', 'groups': [[['钱神']], [['负心汉', '陈亦轩']], [[]]]})

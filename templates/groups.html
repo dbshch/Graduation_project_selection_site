@@ -8,6 +8,30 @@
     <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="../static/global.css">
     <link rel="stylesheet" href="../static/groups.css">
+    <script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#join").click(function(){
+                $.post("/joinGroup",
+                    {
+                        gid: $(this).val()+1,
+                        method: "join"
+                    },
+                    function(data,status){
+                    alert(data);
+                });
+            });
+            $("#leave").click(function(){
+                $.post("/joinGroup",
+                    {
+                        method: "quit"
+                    },
+                    function(data,status){
+                    alert(data);
+                });
+            });
+        });
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-inverse" role="navigation">
@@ -86,7 +110,7 @@
                         </div>
                         <div class="modal-footer" align="center">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary" id="join">Confirm</button>
+                          <button type="button" class="btn btn-primary" value={{ i }} id="join">Confirm</button>
                         </div>
                       </div>
                     </div>

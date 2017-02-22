@@ -11,6 +11,46 @@
     <link rel="stylesheet" href="../static/create_project.css">
     <script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
     <script>
+        $('#fileupload-form').on('submit',(function(e) {
+   	e.preventDefault();
+   	//序列化表单
+      var serializeData = $(this).serialize();
+
+      // var formData = new FormData(this);
+      $(this).ajaxSubmit({
+           type:'POST',
+           url: "/uploadPic",
+           dataType: 'json',
+           data: serializeData,
+           // data: formData,
+
+           //attention!!!
+           contentType: false,
+           cache: false,
+           processData:false,
+
+           beforeSubmit: function() {
+           		//上传图片之前的处理
+           },
+           uploadProgress: function (event, position, total, percentComplete){
+               //在这里控制进度条
+           },
+           success:function(){
+               alert('succ');
+
+           },
+           error:function(data){
+               alert('上传图片出错');
+           }
+       });
+   }));
+
+//绑定文件选择事件，一选择了图片，就让`form`提交。
+
+   $("#fileupload").on("change", function() {
+       alert('asdfasdf');
+       $(this).parent().submit();
+});
         $(document).ready(function(){
             $("#create").click(function(){
                 $.post("/createproject",
@@ -63,6 +103,15 @@
     </div>
 </nav>
 <div class="contents create-project">
+    <div class="upload-title-pic">
+        <form id="fileupload-form">
+     <input id="fileupload" type="file" name="file" >
+</form>
+        <form action="/uploadPic" enctype="multipart/form-data" method="post">
+            <input name="myfile" type="file">
+            <input type="submit" value="Submit">
+        </form>
+    </div>
     <div class="input-group input-group-lg input-title">
         <span class="input-group-addon">Title</span>
         <input type="text" class="form-control" placeholder="Project Name" id="title">
