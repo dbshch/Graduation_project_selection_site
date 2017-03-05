@@ -22,7 +22,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse" aria-expanded="false">
             <ul class="nav navbar-nav">
-                <li class="active">
+                <li>
                     <a href="/">Projects</a>
                 </li>
                 <li>
@@ -74,6 +74,9 @@
                 <li>Student ID: {{ uid }}</li>
                 <li>Progress: Active</li>
                 <li>Group Status: {% if data['grouped']=='l' %}Leader{% elif data['grouped']=='n' %}Not grouped yet{% else %}Member{% end %}</li>
+                <li>Identity: Admin</li>
+                <li>Major: ECE</li>
+                <li>Mobile Phone: 13000000000</li>
             </ul>
         </div>
     </div>
