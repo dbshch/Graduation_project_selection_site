@@ -5,3 +5,14 @@
 .btn-create {
     margin-top: 10px;
 }
+
+.upload-title-pic {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.upload-title-pic > form {
+    display: flex;
+    align-items: center;
+}
