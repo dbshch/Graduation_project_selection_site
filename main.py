@@ -39,7 +39,7 @@ if __name__ == "__main__":
         (r'/logout', LogoutHandler),
         (r"/proj/([0-9]+)", detailHandler),  # The detail of the projects
         (r"/registed", registedHandler),  # for students to view their projects
-        (r"/register", registerHandler),  # for students to regist projects
+        (r"/register", UserRegisterHandler),  # for students to regist projects
         (r"/quit", quitProj),  # for students to quit projects
         (r"/joinGroup", joinGroupHandler),  # for team leader to set groups
         (r"/option", optionHandler),  # for viewing the account status

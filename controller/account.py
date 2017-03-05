@@ -44,6 +44,10 @@ class LoginHandler(BaseHandler):  # Todo Jaccount login
                 self.set_secure_cookie("vd", '')
             self.redirect(next)
 
+# @TODO, just for dev
+class UserRegisterHandler(BaseHandler):
+    def get(self):
+        self.render('register.html')
 
 class LogoutHandler(BaseHandler):
     def get(self):
