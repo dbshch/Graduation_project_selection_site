@@ -72,7 +72,7 @@ class userDB(dbFunction):
     def query(self):
         return \
             self.dataQuery(
-                ("SELECT u_name, role, registed, stat, grouped, group_id FROM users WHERE id = %d" % self.uid))[0]
+                ("SELECT u_name, role, registed, stat, grouped, group_id, role, sex, phone, major FROM users WHERE id = %d" % self.uid))[0]
 
     def isLeader(self):
         res = self.dataQuery(("SELECT grouped FROM users WHERE id=%d" % self.uid))
@@ -172,6 +172,11 @@ class userDB(dbFunction):
         users = ','.join(users)
         op = ("UPDATE groups SET users='%s', user_id='%s' WHERE id=%d" % (users, ids, id))
         self.dataUpdate(op)
+        op = ("UPDATE users SET group_id=%d, grouped='y' WHERE id=%d" % (id, self.uid))
+        self.dataUpdate(op)
+        leader = self.dataQuery("SELECT leader_id FROM groups WHERE id=%d" % id)[0]['leader_id']
+        res = self.dataQuery("SELECT registed FROM users WHERE id=%d" % leader)[0]['registed']
+        self.register(res)
 
     def quitGroup(self):
         qry = self.dataQuery(("SELECT users, user_id FROM groups WHERE id=%d" % self.group_id))[0]
@@ -182,6 +187,8 @@ class userDB(dbFunction):
         ids = ','.join(ids)
         users = ','.join(users)
         op = ("UPDATE groups SET users='%s', user_id='%s' WHERE id=%d" % (users, ids, self.group_id))
+        self.dataUpdate(op)
+        op = ("UPDATE users SET grouped='n', group_id=0 WHERE id=%d" % self.uid)
         self.dataUpdate(op)
 
     def createGroup(self):

@@ -70,13 +70,13 @@
             <h1 class="page-header">My Profile</h1>
             <ul>
                 <li>Name: {{ u_name }}</li>
-                <li>Sex: Male</li>
+                <li>Sex: {{ data['sex'] }}</li>
                 <li>Student ID: {{ uid }}</li>
                 <li>Progress: Active</li>
                 <li>Group Status: {% if data['grouped']=='l' %}Leader{% elif data['grouped']=='n' %}Not grouped yet{% else %}Member{% end %}</li>
-                <li>Identity: Admin</li>
-                <li>Major: ECE</li>
-                <li>Mobile Phone: 13000000000</li>
+                <li>Identity: {{ data['role'] }}</li>
+                <li>Major: {{ data['major'] }}</li>
+                <li>Mobile Phone: {{ data['phone'] }}</li>
             </ul>
         </div>
     </div>

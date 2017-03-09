@@ -117,6 +117,12 @@
                       <a href="#"><i class="fa fa-sort" aria-hidden="true"></i></a>
                   </p>
               </div>
+                <div class="col-md-2">
+                  <p>
+                      <span>Sponsor</span>
+                      <a href="#"><i class="fa fa-sort" aria-hidden="true"></i></a>
+                  </p>
+              </div>
             </div>
             <!-- projects -->
             {% for item in projs %}
@@ -132,16 +138,19 @@
                     </a>
                 </div>
                 <div class="col-md-2">
-                    <p>dbshch from Intel</p>
+                    <p>{{ item['instructor'] }}</p>
                 </div>
                 <div class="col-md-2">
-                    <p>3 Groups, 9 students</p>
+                    <p>{{ item['chosen_num1'] }} Groups, {{ person_num(item['wish1']) }} students</p>
                 </div>
                 <div class="col-md-2">
-                    <p>3 Groups, 9 students</p>
+                    <p>{{ item['chosen_num2'] }} Groups, {{ person_num(item['wish2']) }} students</p>
                 </div>
                 <div class="col-md-2">
-                    <p>Nobody</p>
+                    <p>{{ item['chosen_num3'] }} Groups, {{ person_num(item['wish3']) }} students</p>
+                </div>
+                <div class="col-md-2">
+                    <p>{{ item['sponsor'] }}</p>
                 </div>
             </div>
             {% end %}

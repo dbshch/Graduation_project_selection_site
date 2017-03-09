@@ -50,7 +50,8 @@ if __name__ == "__main__":
         (r"/deleteProj", deleteProjHandler),
         (r'/bower_components/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "bower_components")}),
         (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static")}),
-        (r'/img/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "img")})
+        (r'/img/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "img")}),
+        (r'/exported/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "exported")})
     ], debug=True, **settings)
     # Todo The create project page
     http_server = tornado.httpserver.HTTPServer(application)

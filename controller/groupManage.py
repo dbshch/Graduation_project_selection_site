@@ -11,12 +11,13 @@ class joinGroupHandler(BaseHandler):
         u_name = user.u_name
         res = user.query()
         stat = res['grouped']
+        gid = res['group_id']
         role = res['role']
         res = user.allUsers()
         stat = user.groupStat()
         groups = groupDB().allGroups()
         l = len(groups)
-        self.render("groups.html", stat=stat, users=res, u_name=u_name, groups=groups, l=l, role=role)
+        self.render("groups.html", stat=stat, gid=gid, users=res, u_name=u_name, groups=groups, l=l, role=role)
 
     @tornado.web.authenticated
     def post(self):

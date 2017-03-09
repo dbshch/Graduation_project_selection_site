@@ -113,7 +113,7 @@ class exportHandler(BaseHandler):
                     else:
                         ids = groupDB(group).all_users()
                         for id in ids:
-                            g_usr.append("%s %s" % (id, userDB(id).query()['u_name']))
+                            g_usr.append("%s %s" % (id, userDB(int(id)).query()['u_name']))
                     w_group.append(g_usr)
                 all_grp.append(w_group)
             data.append({"i":i+1,'title':res[i]['title'],'groups':all_grp})
