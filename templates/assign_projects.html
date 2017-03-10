@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JI Graduation Projects</title>
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../static/global.css">
+    <link rel="stylesheet" href="../static/assign_projects.css">
+</head>
+<body>
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="my-toggle navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+            </button>
+            <a class="navbar-brand" href="/">
+                <p>JI Graduation Project Website</p>
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse" aria-expanded="false">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="/">Projects</a>
+                </li>
+                <li>
+                    <a href="joinGroup">Groups</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ u_name }}<span
+                            class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/option">My Profile</a></li>
+                        {% if role=='stu' %}
+                        <li><a href="/registed">My Project</a></li>
+                        {% else %}
+                        <li><a href="/export">Export data</a> </li>
+                        {% end %}
+                        <li><a href="/logout">Log out</a></li>
+                        {% if role=='stu' %}
+                        <li class="divider"></li>
+                        <li><a href="/createproject">Create a Group</a></li>
+                        {% else %}
+                        <li class="divider"></li>
+                        <li><a href="/createproject">Create a Project</a></li>
+                        {% end %}
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+  <div class="row post-export">
+    <div class="col-md-4 col-md-offset-8">
+        <button class="btn">Post</button>
+        <button class="btn" disabled="disabled">Export to Excel</button>
+    </div>
+  </div>
+  <div class="projects">
+    <div class="single-proj">
+      <div class="overview row">
+        <div class="img col-md-3">
+          <a href="#">
+            <img class="thumbnail img-responsive" src="#">
+          </a>
+        </div>
+        <div class="title col-md-3">
+          <p> TITLE TITLE TITLE TITLE TITLE TITLE TITLE TITLE TITLE TITLE </p>
+        </div>
+        <div class="allgroups col-md-6">
+          <div class="somegro">
+            <ul>
+              <li>Group 1: fxh, qs</li>
+              <li>Group 2: fxh, qs</li>
+              <li>Group 3: fxh, qs</li>
+              <li>Group 4: fxh, qs</li>
+            </ul>
+          </div>
+          <div class="somegro">
+            <ul>
+              <li>Group 5: fxh, qs</li>
+              <li>Group 6: fxh, qs</li>
+              <li>Group 7: fxh, qs</li>
+              <li>Group 8: fxh, qs</li>
+            </ul>
+          </div>
+          <div class="somegro">
+            <ul>
+              <li>Group 9: fxh, qs</li>
+              <li>Group 10: fxh, qs</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="assign row">
+        <div class="col-md-10">
+          <div class="label-assign">
+            <label>Assign:</label>
+          </div>
+          <div class="select">
+            <form role="form">
+              <div class="form-group select-stu">
+                <select class="form-control">
+                  <option>SELECT</option>
+                  <option>qs</option>
+                  <option>fxh</option>
+                  <option>xd</option>
+                  <option>dbshch from Intel</option>
+                </select>
+              </div>
+              <div class="form-group select-stu">
+                <select class="form-control">
+                  <option>SELECT</option>
+                  <option>qs</option>
+                  <option>fxh</option>
+                  <option>xd</option>
+                  <option>dbshch from Intel</option>
+                </select>
+              </div>
+              <div class="form-group select-stu">
+                <select class="form-control">
+                  <option>SELECT</option>
+                  <option>qs</option>
+                  <option>fxh</option>
+                  <option>xd</option>
+                  <option>dbshch from Intel</option>
+                </select>
+              </div>
+              <div class="form-group select-stu">
+                <select class="form-control">
+                  <option>SELECT</option>
+                  <option>qs</option>
+                  <option>fxh</option>
+                  <option>xd</option>
+                  <option>dbshch from Intel</option>
+                </select>
+              </div>
+              <div class="form-group select-stu">
+                <select class="form-control">
+                  <option>SELECT</option>
+                  <option>qs</option>
+                  <option>fxh</option>
+                  <option>xd</option>
+                  <option>dbshch from Intel</option>
+                </select>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-md-2 comfirm">
+          <button class="btn btn-default">Confirm</button>
+        </div>
+      </div>
+    </div>
+    <div class="single-proj">
+      <div class="overview row">
+        <div class="img col-md-3">
+          <a href="#">
+            <img class="thumbnail img-responsive" src="#">
+          </a>
+        </div>
+        <div class="title col-md-3">
+          <p> TITLE TITLE TITLE TITLE TITLE TITLE TITLE TITLE TITLE TITLE </p>
+        </div>
+        <div class="allgroups col-md-6">
+          <div class="somegro">
+            <ul>
+              <li>Group 1: fxh, qs</li>
+              <li>Group 2: fxh, qs</li>
+              <li>Group 3: fxh, qs</li>
+              <li>Group 4: fxh, qs</li>
+            </ul>
+          </div>
+          <div class="somegro">
+            <ul>
+              <li>Group 5: fxh, qs</li>
+              <li>Group 6: fxh, qs</li>
+              <li>Group 7: fxh, qs</li>
+              <li>Group 8: fxh, qs</li>
+            </ul>
+          </div>
+          <div class="somegro">
+            <ul>
+              <li>Group 9: fxh, qs</li>
+              <li>Group 10: fxh, qs</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="assign row">
+        <div class="col-md-10">
+          <div class="label-assign">
+            <label>Assign:</label>
+          </div>
+          <div class="select">
+            <form role="form">
+              <div class="form-group select-stu">
+                <select class="form-control">
+                  <option>SELECT</option>
+                  <option>qs</option>
+                  <option>fxh</option>
+                  <option>xd</option>
+                  <option>dbshch from Intel</option>
+                </select>
+              </div>
+              <div class="form-group select-stu">
+                <select class="form-control">
+                  <option>SELECT</option>
+                  <option>qs</option>
+                  <option>fxh</option>
+                  <option>xd</option>
+                  <option>dbshch from Intel</option>
+                </select>
+              </div>
+              <div class="form-group select-stu">
+                <select class="form-control">
+                  <option>SELECT</option>
+                  <option>qs</option>
+                  <option>fxh</option>
+                  <option>xd</option>
+                  <option>dbshch from Intel</option>
+                </select>
+              </div>
+              <div class="form-group select-stu">
+                <select class="form-control">
+                  <option>SELECT</option>
+                  <option>qs</option>
+                  <option>fxh</option>
+                  <option>xd</option>
+                  <option>dbshch from Intel</option>
+                </select>
+              </div>
+              <div class="form-group select-stu">
+                <select class="form-control">
+                  <option>SELECT</option>
+                  <option>qs</option>
+                  <option>fxh</option>
+                  <option>xd</option>
+                  <option>dbshch from Intel</option>
+                </select>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-md-2 comfirm">
+          <button class="btn btn-default">Edit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

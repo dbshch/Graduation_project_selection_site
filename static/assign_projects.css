@@ -1,0 +1,59 @@
+.post-export{
+  height:30px;
+  text-align: right;
+}
+.post-export .btn{
+  background-color:	#3C3C3C;
+  color: #fff;
+}
+
+.single-proj{
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.overview{
+  height: 120px;
+  margin-top: auto;
+  padding:10px;
+  border:3px solid #E8E8E8;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  background: #F5F5F5;
+}
+.title{
+  text-align: center;
+  font-weight: bold;
+}
+.allgroups{
+  color:#6C6C6C;
+}
+.somegro{
+  width: 33%;
+  float: left;
+}
+ul li{
+  list-style-type:none;
+  float:left;
+}
+
+.assign{
+  padding-top:10px;
+  border:3px solid #E8E8E8;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.label-assign{
+  position: absolute;
+  top: 6px;
+  margin-left: 2%;
+}
+.select{
+  padding-left: 8%;
+}
+.select-stu{
+  width:20%;
+  float:left;
+  padding-left: 2%;
+}
