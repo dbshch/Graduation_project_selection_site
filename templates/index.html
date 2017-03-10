@@ -67,10 +67,10 @@
                     <div class="col-md-12 filter">
                         <label class="title-filter">FILTER :</label>
                         <ul class="options-filter">
-                            <li href="#" class="btn active">All</li>
-                            <li href="#" class="btn">ECE</li>
-                            <li href="#" class="btn">ME</li>
-                            <li href="#" class="btn">Others</li>
+                            <li class="btn{% if not flt %} active{% end %}"><a href="/"><font color="black">All</font> </a> </li>
+                            <li class="btn{% if flt=='ece' %} active{% end %}"><a href="/filter/ece"><font color="black">ECE</font> </a> </li>
+                            <li class="btn{% if flt=='me' %} active{% end %}"><a href="/filter/me"><font color="black">ME</font> </a> </li>
+                            <li class="btn{% if flt=='other' %} active{% end %}"><a href="/filter/other"><font color="black">Other</font> </a> </li>
                         </ul>
                     </div>
                 </div>
@@ -99,33 +99,39 @@
             <!-- header -->
             <div class="header row">
               <div class="col-md-4">
-                  <p>Project</p>
+                  <p>
+                      <span>Project</span>
+                      <a href="?sort={% if sort == 'up' %}down{% else %}up{% end %}&name=title"><i class="fa fa-sort" aria-hidden="true"></i></a>
+                  </p>
               </div>
               <div class="col-md-2">
-                  <p>Instructor</p>
+                  <p>
+                      <span>Instructor</span>
+                      <a href="?sort={% if sort == 'up' %}down{% else %}up{% end %}&name=instructor"><i class="fa fa-sort" aria-hidden="true"></i></a>
+                  </p>
               </div>
               <div class="col-md-2">
                   <p>
                       <span>First Choice</span>
-                      <a href="#"><i class="fa fa-sort" aria-hidden="true"></i></a>
+                      <a href="?sort={% if sort == 'up' %}down{% else %}up{% end %}&name=fchoice"><i class="fa fa-sort" aria-hidden="true"></i></a>
                   </p>
               </div>
               <div class="col-md-2">
                   <p>
                       <span>Second Choice</span>
-                      <a href="#"><i class="fa fa-sort" aria-hidden="true"></i></a>
+                      <a href="?sort={% if sort == 'up' %}down{% else %}up{% end %}&name=schoice"><i class="fa fa-sort" aria-hidden="true"></i></a>
                   </p>
               </div>
               <div class="col-md-2">
                   <p>
                       <span>Third Choice</span>
-                      <a href="#"><i class="fa fa-sort" aria-hidden="true"></i></a>
+                      <a href="?sort={% if sort == 'up' %}down{% else %}up{% end %}&name=tchoice"><i class="fa fa-sort" aria-hidden="true"></i></a>
                   </p>
               </div>
                 <div class="col-md-2">
                   <p>
                       <span>Sponsor</span>
-                      <a href="#"><i class="fa fa-sort" aria-hidden="true"></i></a>
+                      <a href="?sort={% if sort == 'up' %}down{% else %}up{% end %}&name=sponsor"><i class="fa fa-sort" aria-hidden="true"></i></a>
                   </p>
               </div>
             </div>
@@ -134,7 +140,7 @@
             <div class="proj row">
                 <div class="col-md-2">
                     <a href="/proj/{{ item['id'] }}">
-                        <img class="thumbnail img-responsive" src="img/{{ item['img'] }}">
+                        <img class="thumbnail img-responsive" src="/img/{{ item['img'] }}">
                     </a>
                 </div>
                 <div class="col-md-2">

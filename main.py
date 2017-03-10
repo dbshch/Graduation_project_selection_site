@@ -22,8 +22,57 @@ class WelcomeHandler(BaseHandler):
         u_name = self.get_secure_cookie('u_name').decode('UTF-8')
         projs = projectDB().allProjects()
         role = userDB(uid).query()['role']
-        self.render('index.html', u_name=u_name, projs=projs, role=role)
-        # TODO: the sort and filter functions; The way to show brief view of projects
+        sort = self.get_argument('sort', default='')
+        name = self.get_argument('name', default='')
+        i = 0
+        if name == 'fchoice':
+            i = 1
+        elif name == 'schoice':
+            i = 2
+        elif name == 'tchoice':
+            i = 3
+        if i:
+            for seq in range(len(projs)):
+                projs[seq]['blabla'] = len(projs[seq]['wish%d' % i].split(','))
+        if sort:
+            if i:
+                projs = sorted(projs, key=lambda proj: proj['blabla'])
+            else:
+                projs = sorted(projs, key=lambda proj: proj[name])
+            if sort == 'down':
+                projs.reverse()
+        self.render('index.html', u_name=u_name, projs=projs, role=role, sort=sort, flt='')
+
+
+class filterHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self, flt):
+        uid = int(tornado.escape.xhtml_escape(self.current_user))
+        u_name = self.get_secure_cookie('u_name').decode('UTF-8')
+        projs = projectDB().allProjects()
+        projs = filter(lambda proj: proj['major'].lower() == flt, projs)
+        role = userDB(uid).query()['role']
+        sort = self.get_argument('sort', default='')
+        name = self.get_argument('name', default='')
+        i = 0
+        if name == 'fchoice':
+            i = 1
+        elif name == 'schoice':
+            i = 2
+        elif name == 'tchoice':
+            i = 3
+        if i:
+            for seq in range(len(projs)):
+                projs[seq]['blabla'] = len(projs[seq]['wish%d' % i].split(','))
+        if sort:
+            if i:
+                projs = sorted(projs, key=lambda proj: proj['blabla'])
+            else:
+                projs = sorted(projs, key=lambda proj: proj[name])
+            if sort == 'down':
+                projs.reverse()
+        self.render('index.html', u_name=u_name, projs=projs, role=role, sort=sort, flt=flt)
+
 
 if __name__ == "__main__":
     tornado.options.parse_command_line()
@@ -50,6 +99,7 @@ if __name__ == "__main__":
         (r"/deleteProj", deleteProjHandler),
         (r"/assign", assignProjHandler),
         (r"/member/([0-9]+)", memberHandler),
+        (r"/filter/([a-z]+)", filterHandler),
         (r'/bower_components/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "bower_components")}),
         (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static")}),
         (r'/img/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "img")}),

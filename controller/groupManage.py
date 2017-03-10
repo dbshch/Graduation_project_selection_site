@@ -26,6 +26,8 @@ class joinGroupHandler(BaseHandler):
         if user.isLeader():
             grp = groupDB(user.query()['group_id'])
             for member in grp.members():
+                if not member:
+                    break
                 userDB(member).quitGroup()
             user.leaderQuit()
             self.write("Success")
@@ -38,6 +40,10 @@ class joinGroupHandler(BaseHandler):
             groupID = int(self.get_argument('gid'))
             user.joinGroup(groupID)
             self.write('success')
+        elif method == 'create':
+            if user.query()['grouped'] == 'n':
+                user.createGroup()
+                self.write('success')
         else:
             user.quitGroup()
             self.write('success')

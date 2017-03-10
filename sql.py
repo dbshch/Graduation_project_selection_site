@@ -164,10 +164,14 @@ class userDB(dbFunction):
 
     def joinGroup(self, id):
         qry = self.dataQuery(("SELECT users, user_id FROM groups WHERE id=%d" % id))[0]
-        users = qry['users'].split(',')
-        ids = qry['user_id'].split(',')
-        ids.append(str(self.uid))
-        users.append(self.u_name)
+        if qry['users']:
+            users = qry['users'].split(',')
+            ids = qry['user_id'].split(',')
+            ids.append(str(self.uid))
+            users.append(self.u_name)
+        else:
+            ids = [str(self.uid)]
+            users = [self.u_name]
         ids = ','.join(ids)
         users = ','.join(users)
         op = ("UPDATE groups SET users='%s', user_id='%s' WHERE id=%d" % (users, ids, id))
@@ -197,11 +201,21 @@ class userDB(dbFunction):
         self.dataUpdate(op)
         op = ("UPDATE users SET grouped='n', group_id=0 WHERE id=%d" % self.uid)
         self.dataUpdate(op)
+        wish = self.query()['registed'].split(',')
+        for i in range(3):
+            if wish[i] != 'n':
+                projectDB(wish[i]).changeChosen(i+1, -1)
 
     def createGroup(self):
-        new_group = groupDB().newGroup(self)
+        new_group = groupDB()
+        new_group.newGroup(self)
         self.group_id = new_group.id
-        self.dataUpdate(("UPDATE users SET group_id=%d WHERE id=%d" % (self.group_id, self.uid)))
+        self.dataUpdate(("UPDATE users SET grouped='l', group_id=%d WHERE id=%d" % (self.group_id, self.uid)))
+        qry = self.query()
+        wish = qry['registed'].split(',')
+        for i in range(3):
+            if wish[i] != 'n':
+                projectDB(wish[i]).changeChosen(i+1, 1)
 
 
 class groupDB(dbFunction):
@@ -240,8 +254,14 @@ class groupDB(dbFunction):
         return self.dataQuery(("SELECT users FROM groups WHERE id=%d" % self.id))[0]['users']
 
     def newGroup(self, user):
+        max = self.dataQuery(("SELECT MAX(id) FROM groups"))[0]['MAX(id)']
+        if max:
+            self.id = max + 1
+        else:
+            self.id = 1
         op = ("INSERT INTO groups VALUES (%d, '%s', '', %d, '', '0')" % (self.id, user.u_name, user.uid))
         self.dataUpdate(op)
+
 
     def deleteMember(self, uid):
         op = ("UPDATE groups SET users")
@@ -298,4 +318,10 @@ class projectDB(dbFunction):
                 registed[i - 1] = 'n'
                 db.register(','.join(registed))
         op = ("DELETE FROM projects WHERE id=%d" % self.id)
+        self.dataUpdate(op)
+
+    def changeChosen(self, seq, change):
+        qry = self.query()
+        chosen = qry['chosen_num%d' % seq]
+        op = ("UPDATE projects SET chosen_num%d=%d WHERE id=%d" % (seq, chosen+change, self.id))
         self.dataUpdate(op)

@@ -30,6 +30,15 @@
                     alert(data);
                 });
             });
+            $("#create").click(function(){
+                $.post("/joinGroup",
+                    {
+                        method: "create"
+                    },
+                    function(data,status){
+                    alert(data);
+                });
+            });
         });
     </script>
 </head>
@@ -86,6 +95,47 @@
 </nav>
 <div class="contents groups">
     <div class="container-fluid">
+        {% if role == 'stu' %}
+        {% if stat == 'n' %}
+        <button class="btn btn-success" data-toggle="modal" data-target="#leave-modal">Create a new group</button>
+                  <div class="modal fade" id="leave-modal">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                          <h4>Confirmation</h4>
+                        </div>
+                        <div class="modal-body">
+                          Are you sure to create a new group?
+                        </div>
+                        <div class="modal-footer" align="center">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary" id="create">Confirm</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+        {% elif stat == 'l' %}
+        <button class="btn btn-warning" data-toggle="modal" data-target="#leave-modal">Delete your group</button>
+                  <div class="modal fade" id="leave-modal">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                          <h4>Confirmation</h4>
+                        </div>
+                        <div class="modal-body">
+                          Are you sure to delete your group?
+                        </div>
+                        <div class="modal-footer" align="center">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary" id="leave">Confirm</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+        {% end %}
+        {% end %}
         <table class="table table-striped">
             <thead class="table-head">
             <tr>
