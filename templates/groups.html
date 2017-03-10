@@ -101,9 +101,20 @@
             {% for i in range(l) %}
             <tr>
                 <td>{{ i + 1 }}</td>
-                <td><a href="/member/{{ groups[i]['leader_id'] }}"> {{ groups[i]['leader'] }}</a></td>
+                <td>
+                    {% if role == 'admin' %}
+                    <a href="/member/{{ groups[i]['leader_id'] }}"> {{ groups[i]['leader'] }}</a>
+                    {% else %}
+                    {{ groups[i]['leader'] }}
+                    {% end %}
+                </td>
                 <td>{% for j in range(len(split(groups[i]['users']))) %}
-                    <a href="/member/{{ split(groups[i]['user_id'])[j] }}"> {{ split(groups[i]['users'])[j] }}</a><br>
+                    {% if role == 'admin' %}
+                    <a href="/member/{{ split(groups[i]['user_id'])[j] }}"> {{ split(groups[i]['users'])[j] }}</a>
+                    {% else %}
+                    {{ split(groups[i]['users'])[j] }}
+                    {% end %}
+                    <br>
                     {% end %}
                 </td>
                 {% if role == 'stu' %}

@@ -31,8 +31,11 @@ class joinGroupHandler(BaseHandler):
             self.write("Success")
             return
         if method == 'join':
+            grp = user.query()['group_id']
+            if grp:
+                self.write('success')
+                return
             groupID = int(self.get_argument('gid'))
-            print(groupID)
             user.joinGroup(groupID)
             self.write('success')
         else:
