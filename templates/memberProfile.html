@@ -60,21 +60,10 @@
 </nav>
 <div class="contents">
     <div class="container-fluid">
-        <div class="col-sm-3 col-md-2 sidebar">
-            <ul class="nav nav-sidebar">
-                <li class="active"><a href="/registed">My Profile</a></li>
-                {% if role=='stu' %}
-                <li><a href="/registed">My Project</a></li>
-                {% else %}
-                <li><a href="/export">Export Data</a></li>
-                {% end %}
-                <li><a href="/logout">Log out</a></li>
-            </ul>
-        </div>
         <div class="col-md-10 col-md-offset-2">
-            <h1 class="page-header">My Profile</h1>
+            <h1 class="page-header">{{ data['u_name'] }}'s Profile</h1>
             <ul>
-                <li>Name: {{ u_name }}</li>
+                <li>Name: {{ data['u_name'] }}</li>
                 <li>Sex: {{ data['sex'] }}</li>
                 <li>Student ID: {{ uid }}</li>
                 <li>Progress: Active</li>

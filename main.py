@@ -48,6 +48,8 @@ if __name__ == "__main__":
         (r"/createproject", createProjectHandler),
         (r"/uploadPic", uploadPicHandler),
         (r"/deleteProj", deleteProjHandler),
+        (r"/assign", assignProjHandler),
+        (r"/member/([0-9]+)", memberHandler),
         (r'/bower_components/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "bower_components")}),
         (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static")}),
         (r'/img/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "img")}),

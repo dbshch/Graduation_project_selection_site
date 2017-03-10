@@ -51,8 +51,13 @@
                     <a href="/">Projects</a>
                 </li>
                 <li class="active">
-                    <a href="joinGroup">Groups</a>
+                    <a href="/joinGroup">Groups</a>
                 </li>
+                {% if role == 'admin' %}
+                <li>
+                    <a href="/assign">Assign</a>
+                </li>
+                {% end %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
@@ -95,9 +100,12 @@
             <tbody>
             {% for i in range(l) %}
             <tr>
-                <td>{{ i+1 }}</td>
-                <td>{{ groups[i]['leader'] }}</td>
-                <td>{{ groups[i]['users'] }}</td>
+                <td>{{ i + 1 }}</td>
+                <td><a href="/member/{{ groups[i]['leader_id'] }}"> {{ groups[i]['leader'] }}</a></td>
+                <td>{% for j in range(len(split(groups[i]['users']))) %}
+                    <a href="/member/{{ split(groups[i]['user_id'])[j] }}"> {{ split(groups[i]['users'])[j] }}</a><br>
+                    {% end %}
+                </td>
                 {% if role == 'stu' %}
                 <td>
                     {% if gid != groups[i]['id'] %}

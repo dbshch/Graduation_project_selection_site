@@ -67,6 +67,11 @@
                 <li>
                     <a href="/joinGroup">Groups</a>
                 </li>
+                {% if role == 'admin' %}
+                <li>
+                    <a href="/assign">Assign</a>
+                </li>
+                {% end %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">

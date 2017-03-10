@@ -87,7 +87,6 @@ class detailHandler(BaseHandler):
         isIn = id in res['registed']
         role = res['role']
         self.render("detail.html", i=id, proj=proj, u_name=self.get_secure_cookie('u_name'), isIn=isIn, role=role)
-        # TODO quit and register button
 
 
 class uploadPicHandler(BaseHandler):
@@ -120,3 +119,14 @@ class deleteProjHandler(BaseHandler):
             proj = projectDB(pid)
             proj.deleteProject()
             self.write('success')
+
+class assignProjHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        uid = int(tornado.escape.xhtml_escape(self.current_user))
+        role = userDB(uid).query()['role']
+        u_name = self.get_secure_cookie('u_name').decode('UTF-8')
+        if role == 'stu':
+            self.render('403.html', u_name=u_name, role=role)
+        else:
+            self.render('assign_projects.html', u_name=u_name, role=role)

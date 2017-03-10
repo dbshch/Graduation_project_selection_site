@@ -109,3 +109,12 @@ class forbiddenHandler(BaseHandler):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
         role = userDB(uid).query()['role']
         self.render('403.html', u_name=u_name, role=role)
+
+class memberHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self, id):
+        uid = id
+        user = userDB(uid)
+        data = user.query()
+        role = data['role']
+        self.render("memberProfile.html", uid=id, data=data, u_name=self.get_secure_cookie('u_name'), role=role)
