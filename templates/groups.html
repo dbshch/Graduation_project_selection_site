@@ -87,7 +87,9 @@
               <td class="gro-no">Group No.</td>
               <td class="gro-led">Group Leader</td>
               <td class="gro-mem">Group Members</td>
+                {% if role == 'stu' %}
               <td>Join / Leave</td>
+                {% end %}
             </tr>
             </thead>
             <tbody>
@@ -96,6 +98,7 @@
                 <td>{{ i+1 }}</td>
                 <td>{{ groups[i]['leader'] }}</td>
                 <td>{{ groups[i]['users'] }}</td>
+                {% if role == 'stu' %}
                 <td>
                     {% if gid != groups[i]['id'] %}
                     {% if groups[i]['isFull'] %}
@@ -130,7 +133,7 @@
                           <h4>Confirmation</h4>
                         </div>
                         <div class="modal-body">
-                          Are you sure to leave the group?
+                          Are you sure to leave the group? {% if stat == 'l' %} If you leave the group, the group will be dismissed. {% end %}
                         </div>
                         <div class="modal-footer" align="center">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -141,6 +144,7 @@
                   </div>
                     {% end %}
                 </td>
+                {% end %}
               </tr>
             {% end %}
             </tbody>

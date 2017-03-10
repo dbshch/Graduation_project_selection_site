@@ -14,7 +14,6 @@ class joinGroupHandler(BaseHandler):
         gid = res['group_id']
         role = res['role']
         res = user.allUsers()
-        stat = user.groupStat()
         groups = groupDB().allGroups()
         l = len(groups)
         self.render("groups.html", stat=stat, gid=gid, users=res, u_name=u_name, groups=groups, l=l, role=role)
@@ -25,7 +24,11 @@ class joinGroupHandler(BaseHandler):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
         user = userDB(uid)
         if user.isLeader():
-            self.write("Sorry you are the leader and you can't join or quit the group")
+            grp = groupDB(user.query()['group_id'])
+            for member in grp.members():
+                userDB(member).quitGroup()
+            user.leaderQuit()
+            self.write("Success")
             return
         if method == 'join':
             groupID = int(self.get_argument('gid'))

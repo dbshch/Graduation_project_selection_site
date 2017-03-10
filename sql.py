@@ -191,6 +191,13 @@ class userDB(dbFunction):
         op = ("UPDATE users SET grouped='n', group_id=0 WHERE id=%d" % self.uid)
         self.dataUpdate(op)
 
+    def leaderQuit(self):
+        gid = self.query()['group_id']
+        op = ("DELETE FROM groups WHERE id=%d" % gid)
+        self.dataUpdate(op)
+        op = ("UPDATE users SET grouped='n', group_id=0 WHERE id=%d" % self.uid)
+        self.dataUpdate(op)
+
     def createGroup(self):
         new_group = groupDB().newGroup(self)
         self.group_id = new_group.id
@@ -202,7 +209,10 @@ class groupDB(dbFunction):
         dbFunction.__init__(self)
         if id == 0:
             max = self.dataQuery(("SELECT MAX(id) FROM groups"))[0]['MAX(id)']
-            self.id = max + 1
+            if max:
+                self.id = max + 1
+            else:
+                self.id = 1
         else:
             self.id = int(id)
 
