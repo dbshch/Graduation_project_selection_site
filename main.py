@@ -90,7 +90,8 @@ if __name__ == "__main__":
         (r'/logout', LogoutHandler),
         (r"/proj/([0-9]+)", detailHandler),  # The detail of the projects
         (r"/registed", registedHandler),  # for students to view their projects
-        (r"/register", UserRegisterHandler),  # for students to regist projects
+        (r"/register", registerHandler),  # for students to regist projects
+        (r"/userregister", UserRegisterHandler),
         (r"/quit", quitProj),  # for students to quit projects
         (r"/joinGroup", joinGroupHandler),  # for team leader to set groups
         (r"/option", optionHandler),  # for viewing the account status
@@ -102,6 +103,8 @@ if __name__ == "__main__":
         (r"/assign", assignProjHandler),
         (r"/member/([0-9]+)", memberHandler),
         (r"/filter/([a-z]+)", filterHandler),
+        (r"/jalogin", jaloginHandler),
+        (r"/jacode", jacodeHandler),
         (r'/bower_components/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "bower_components")}),
         (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static")}),
         (r'/img/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "img")}),

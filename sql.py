@@ -135,11 +135,11 @@ class userDB(dbFunction):
         op = ("UPDATE users SET registed='%s', stat='%s' where id=%s" % (res, stat, self.uid))
         self.dataUpdate(op)
 
-    def newUser(self, u_name, role, pwd):
+    def newUser(self, u_name, role, pwd, phone, major, sex):
         self.u_name = u_name
         self.group_id = 0
-        op = ("INSERT INTO users VALUES ('%s', '%s', 'n,n,n', '%s', 'n,n,n', %d, 'n', 0)" % (
-            u_name, role, pwd, self.uid))
+        op = ("INSERT INTO users VALUES ('%s', '%s', 'n,n,n', '%s', '0,0,0', %d, 'n', 0, %d, '%s', '%s')" % (
+            u_name, role, pwd, self.uid, int(phone), major, sex))
         self.dataUpdate(op)
 
     def deleteUser(self):
