@@ -24,7 +24,7 @@ class BaseHandler(tornado.web.RequestHandler):
 
 
 
-class LoginHandler(BaseHandler):  # Todo Jaccount login
+class LoginHandler(BaseHandler):
     def get(self):
         next = self.get_argument('next')
         self.render('login.html', next=next)

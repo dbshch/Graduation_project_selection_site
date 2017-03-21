@@ -108,8 +108,8 @@
                 </p>
                 {% end %}
             </div>
-            {% if role=='stu' %}
             <div class="col-md-4">
+            {% if role=='stu' %}
                 {% if isIn==False %}
                 <div class="project-submit">
                     <button class="btn btn-primary" data-toggle="modal" data-target="#register-modal">Register the Project</button>
@@ -141,97 +141,42 @@
                         </div>
                     </div>
                 </div>
-
-				<div class="panel panel-success" style="width: 47%; float: left">
-  					<div class="panel-heading">Instuctor</div>
-  					<div class="panel-body">
-    					xxxxx
-  					</div>
-				</div>
-				<div class="panel panel-success" style="width: 47%; float: right">
-  					<div class="panel-heading">Sponsor</div>
-  					<div class="panel-body">
-    					yyyyy
-  				</div>
-				</div>
-
-				<div class="panel panel-info" style="margin-top: 113px;">
-  					<!-- Default panel contents -->
-  					<div class="panel-heading">Current Selection Information</div>
-		
-  					<!-- List group -->
-  					<ul class="list-group">
-    				<li class="list-group-item">x groups, y students</li>
-    				<li class="list-group-item">x groups, y students</li>
-    				<li class="list-group-item">x groups, y students</li>
-  					</ul>
-				</div>
-
                 {% else %}
                 <div class="project-submit">
                     <button class="btn btn-primary" id="quit" style="margin-bottom: 20px;">Quit the Project</button>
                 </div>
-
-				<div class="panel panel-success" style="width: 47%; float: left">
-  					<div class="panel-heading">Instuctor</div>
-  					<div class="panel-body">
-    					xxxxx
-  					</div>
-				</div>
-				<div class="panel panel-success" style="width: 47%; float: right">
-  					<div class="panel-heading">Sponsor</div>
-  					<div class="panel-body">
-    					yyyyy
-  				</div>
-				</div>
-
-				<div class="panel panel-info" style="margin-top: 113px;">
-  					<!-- Default panel contents -->
-  					<div class="panel-heading">Current Selection Information</div>
-		
-  					<!-- List group -->
-  					<ul class="list-group">
-    				<li class="list-group-item">x groups, y students</li>
-    				<li class="list-group-item">x groups, y students</li>
-    				<li class="list-group-item">x groups, y students</li>
-  					</ul>
-				</div>
-
                 {% end %}
-                <div class="peoples-in">
-                    <!--<p>A group has chosen this project.</p>-->
-                </div>
-            </div>
             {% else %}
                 <div class="project-submit">
                     <button class="btn btn-primary" id="delete">Delete the Project</button>
                 </div>
 
-				<div class="panel panel-success" style="width: 47%; float: left">
+            {% end %}
+                <div class="panel panel-success" style="width: 47%; float: left">
   					<div class="panel-heading">Instuctor</div>
   					<div class="panel-body">
-    					xxxxx
+    					{{ proj['instructor'] }}
   					</div>
 				</div>
 				<div class="panel panel-success" style="width: 47%; float: right">
   					<div class="panel-heading">Sponsor</div>
   					<div class="panel-body">
-    					yyyyy
+    					{{ proj['sponsor'] }}
   				</div>
 				</div>
 
 				<div class="panel panel-info" style="margin-top: 113px;">
   					<!-- Default panel contents -->
   					<div class="panel-heading">Current Selection Information</div>
-		
+
   					<!-- List group -->
   					<ul class="list-group">
-    				<li class="list-group-item">x groups, y students</li>
-    				<li class="list-group-item">x groups, y students</li>
-    				<li class="list-group-item">x groups, y students</li>
+    				<li class="list-group-item">{{ proj['chosen_num1'] }} groups, {{ person_num(proj['wish1']) }} students</li>
+    				<li class="list-group-item">{{ proj['chosen_num2'] }} groups, {{ person_num(proj['wish2']) }} students</li>
+    				<li class="list-group-item">{{ proj['chosen_num3'] }} groups, {{ person_num(proj['wish3']) }} students</li>
   					</ul>
 				</div>
-            {% end %}
+            </div>
         </div>
     </div>
 </div>
