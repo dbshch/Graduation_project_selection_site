@@ -5,3 +5,4 @@ password: passwd
 
 # dev-server
 port: 8080
+domain: http://localhost
