@@ -6,8 +6,6 @@
     <title>JI Graduation Projects</title>
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
-	<!--引入wangEditor.css-->
-	<link rel="stylesheet" type="text/css" href="../bower_components/wangeditor/dist/css/wangEditor.min.css">
     <link rel="stylesheet" href="../static/global.css">
     <link href="../bower_components/bootstrap-markdown-editor/dist/css/bootstrap-markdown-editor.css" rel="stylesheet">
     <link rel="stylesheet" href="../static/create_project.css">
@@ -113,41 +111,22 @@
         <!--<form id="fileupload-form">
             <input id="fileupload" type="file" name="file" >
         </form>-->
-        <form action="/uploadPic" enctype="multipart/form-data" method="post">
+        <form action="/uploadPic" enctype="multipart/form-data" method="post" target="nm_iframe">
             <input name="myfile" type="file">
             <input type="submit" value="Submit">
         </form>
     </div>
-    <!--
-	<div class="input-group input-group-lg input-title">
+    <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
+    <div class="input-group input-group-lg input-title">
         <span class="input-group-addon">Title</span>
         <input type="text" class="form-control" placeholder="Project Name" id="title">
     </div>
     <textarea class="input-contents" name="text" id="myEditor"># Test</textarea>
     <button type="button" class="btn btn-primary btn-create" id="create">Create</button>
-	-->
-	<div class="input-group input-group-lg input-title">
-        <span class="input-group-addon">Title</span>
-        <input type="text" class="form-control" placeholder="Project Name" id="title">
-    </div>
-	<textarea id="textarea1" style="height:450px;">
-    	<p>Project Details...</p>
-	</textarea>
-    <button type="button" class="btn btn-primary btn-create" id="create">Create Project</button>
 </div>
-
-
-
-
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../bower_components/wangeditor/dist/js/wangEditor.min.js"></script>
 <script src="../bower_components/ace-builds/src-min/ace.js"></script>
-<!--这里引用jquery和wangEditor.js-->
-<script type="text/javascript">
-    var editor = new wangEditor('textarea1');
-    editor.create();
-</script>
 <script src="../bower_components/bootstrap-markdown-editor/dist/js/bootstrap-markdown-editor.js"></script>
 <script src="../static/create_project.js"></script>
 </body>

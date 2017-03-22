@@ -24,9 +24,12 @@ class createProjectHandler(BaseHandler):
         if role == 'stu':
             self.render('403.html', u_name=u_name, role=role)
         else:
+            pic_name = self.get_secure_cookie('pic_name').decode('UTF-8')
+            if not pic_name:
+                self.finish('Upload error')
             title = self.get_argument("title")
             detail = self.get_argument("detail")
-            img = "img2.jpg"
+            img = pic_name
             projectDB().newProject(title, detail, img)
             self.write("success")
 
@@ -100,11 +103,17 @@ class uploadPicHandler(BaseHandler):
         else:
             if self.request.files:
                 myfile = self.request.files['myfile'][0]
-                fileName = "/" + str(time.time()) + "jpg"
+                postfix = ''
+                fname = myfile['filename']
+                if fname.find('.') > -1:
+                    postfix = fname.split('.')[-1]
+                fileName = str(time.time()) + '.' + postfix
                 absPath = os.path.dirname(os.path.abspath("img"))
-                fin = open(absPath + fileName, "wb")
+                fin = open(absPath + "/img/" + fileName, "wb")
                 fin.write(myfile["body"])
                 fin.close()
+            self.set_secure_cookie("pic_name", fileName)
+            self.finish(fileName)
 
 class deleteProjHandler(BaseHandler):
     @tornado.web.authenticated

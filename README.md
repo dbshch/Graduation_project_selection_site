@@ -28,7 +28,8 @@ Now you can visit <http://localhost:portnumber>. The port is set in `config.yaml
 
 We need
 
-- python3
+- MySQL
+- Python3
 - Tornado
 - mysql.connector
 - openpyxl
@@ -65,7 +66,13 @@ cp config.yaml.example config.yaml
 vim config.yaml
 ```
 
-and type your own config. Now, run the server
+and type your own config. Then use the sample.dump file to recover the sql server. For example:
+
+```bash
+mysql -uyouraccountname -ppassword database < ./sample.dump 
+```
+
+Now, you can run the server
 
 ```
 python main.py

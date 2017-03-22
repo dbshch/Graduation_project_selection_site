@@ -29,3 +29,5 @@ if ! python -c "import mysql.connector" > /dev/null 2>&1; then
         python3 setup.py install
     )
 fi
+
+mysql -u"$username" -p"$password" "$dbName" < ./sample.dump
