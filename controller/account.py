@@ -8,7 +8,13 @@ import urllib
 import urllib.request
 import urllib.parse
 import json
+from util.env import *
 
+env = get_env()
+if env['port']:
+    base_url='localhost:'+str(env['port'])
+else:
+    base_url='wuchg.top:8080'
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
@@ -142,7 +148,8 @@ class memberHandler(BaseHandler):
 
 class jaloginHandler(BaseHandler):
     def get(self):
-        self.redirect("https://jaccount.sjtu.edu.cn/oauth2/authorize?response_type=code&client_id=htAZFp7DCwnd1A9q4yDwbyWX&redirect_uri=http://wuchg.top:8080/jacode")
+
+        self.redirect("https://jaccount.sjtu.edu.cn/oauth2/authorize?response_type=code&client_id=htAZFp7DCwnd1A9q4yDwbyWX&redirect_uri=http://"+base_url+"/jacode")
 
 
 class jacodeHandler(BaseHandler):
@@ -154,7 +161,7 @@ class jacodeHandler(BaseHandler):
             "client_secret": "9EADF115A76B760B16089708D06D6BF2EC08CE2C5E613D9B",
             "grant_type": "authorization_code",
             "code": code,
-            "redirect_uri": "http://wuchg.top:8080/jacode"
+            "redirect_uri": "http://"+base_url+"/jacode"
         }).encode('utf-8')
         header = {
             "Host": "jaccount.sjtu.edu.cn",
