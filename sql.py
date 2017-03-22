@@ -101,16 +101,18 @@ class userDB(dbFunction):
                 p.append(projectDB(old[i]))
         res = res.split(',')
         if self.group_id:
+            res_id = ''
             my_group = groupDB(self.group_id).all_users()
             for member in my_group:
                 mem = userDB(member)
+                res_id = res_id + ',' + str(member)
                 mem.register_helper(res, old)
             for i in range(3):
                 if old[i] == res[i]:
                     continue
                 if res[i] != 'n':
                     p[i] = projectDB(res[i])
-                    p[i].newWish(self.group_id, i + 1)
+                    p[i].newWish(res_id[1:], i + 1)
         else:
             self.register_helper(res, old)
             for i in range(3):
@@ -152,12 +154,12 @@ class userDB(dbFunction):
         qry = ("SELECT wish%d FROM projects WHERE id = %d" % (wish_i, id))
         res = self.dataQuery(qry)[0]['wish%d' % wish_i]
         res = res.split(",")
-        gid = str(self.group_id)
-        if self.group_id:
-            if gid in res:
-                res.remove(gid)
-        else:
-            res.remove(str(self.uid))
+        # gid = str(self.group_id)
+        # if self.group_id:
+        #     if gid in res:
+        #         res.remove(gid)
+        # else:
+        res.remove(str(self.uid))
         res = ','.join(res)
         op = ("UPDATE projects SET wish%d='%s' where id=%d" % (wish_i, res, id))
         self.dataUpdate(op)
@@ -300,18 +302,23 @@ class projectDB(dbFunction):
         op = ("UPDATE projects SET wish%d='%s' where id=%d" % (seq, res, self.id))
         self.dataUpdate(op)
 
-    def newProject(self, title, detail, img, sponsor=''):
+    def newProject(self, title, detail, img, sponsor='', major='', instructor='Xuan'):
         op = (
-            "INSERT INTO projects VALUES (%d, '%s', '%s', '%s', '%s', '', '', '')" % (
-                self.id, title, img, sponsor, detail))
+            "INSERT INTO projects VALUES (%d, '%s', '%s', '%s', '%s', '', '', '', 0, 0, 0, 0, 0, '%s', '%s')" % (
+                self.id, title, img, sponsor, detail, major, instructor))
         self.dataUpdate(op)
 
     def deleteProject(self):
         qry = self.query()
         for i in range(1,4):
-            user = qry['wish' + str(i)]
-            if user:
+            users = qry['wish' + str(i)]
+            users = users.split(',')
+            for user in users:
+                if user == '':
+                    break
                 db = userDB(user)
+                if db.groupStat() != 'y':
+                    continue
                 if not db.validUser():
                     db = userDB(groupDB(user).leader())
                 registed = db.query()['registed'].split(',')
