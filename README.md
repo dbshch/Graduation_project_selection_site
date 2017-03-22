@@ -38,17 +38,9 @@ We need
 To manually install them,
 
 ```python
-pip install tornado openpyxl PyYaml
+pip install tornado openpyxl PyYaml mysql-connector-python
 ```
 
-Then download the mysql connector from http://dev.mysql.com/downloads/connector/python/ and install as the orcale's instruction.
-
-Actually, you can download the source code and install it by
-
-```bash
-cd /path/to/the/source/code
-pip install .
-```
 
 ## Manual run
 
