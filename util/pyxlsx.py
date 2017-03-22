@@ -107,11 +107,12 @@ class exportHandler(BaseHandler):
                         w_group.append([])
                         continue
                     g_usr = []
-                    #print(group)
-                    if int(group)>100:
+                    user_info = userDB(int(group)).query()
+                    if user_info['grouped'] == 'n':
                         g_usr.append("%s %s" % (group, userDB(group).query()['u_name']))
-                    else:
-                        ids = groupDB(group).all_users()
+                    elif user_info['grouped'] == 'l':
+                        group_id = user_info['group_id']
+                        ids = groupDB(group_id).all_users()
                         for id in ids:
                             g_usr.append("%s %s" % (id, userDB(int(id)).query()['u_name']))
                     w_group.append(g_usr)
@@ -123,7 +124,7 @@ class exportHandler(BaseHandler):
         else:
             export(data, "exported/%s.xlsx" % output)
             self.redirect('/exported/%s.xlsx' % output)
-            
+
 if __name__ == "__main__":
     data = [{'i': 1, 'title': 'Freesense-Backlight Panel Defect Recognition', 'groups': [[['吴承刚']], [[]], [[]]]}]
     data.append({'i': 2, 'title': 'Recognition', 'groups': [[['钱神']], [['负心汉', '陈亦轩']], [[]]]})
