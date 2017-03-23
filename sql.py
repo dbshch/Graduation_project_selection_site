@@ -28,7 +28,7 @@ class dbFunction(ippDB):
         ippDB.__init__(self)
 
     def dataQuery(self, qry):
-        k=0
+        k = 0
         self.cursor.execute(qry)
         t = []
         for i in self.cursor:
@@ -206,7 +206,7 @@ class userDB(dbFunction):
         wish = self.query()['registed'].split(',')
         for i in range(3):
             if wish[i] != 'n':
-                projectDB(wish[i]).changeChosen(i+1, -1)
+                projectDB(wish[i]).changeChosen(i + 1, -1)
 
     def createGroup(self):
         new_group = groupDB()
@@ -217,7 +217,7 @@ class userDB(dbFunction):
         wish = qry['registed'].split(',')
         for i in range(3):
             if wish[i] != 'n':
-                projectDB(wish[i]).changeChosen(i+1, 1)
+                projectDB(wish[i]).changeChosen(i + 1, 1)
 
 
 class groupDB(dbFunction):
@@ -264,7 +264,6 @@ class groupDB(dbFunction):
         op = ("INSERT INTO groups VALUES (%d, '%s', '', %d, '', '0')" % (self.id, user.u_name, user.uid))
         self.dataUpdate(op)
 
-
     def deleteMember(self, uid):
         op = ("UPDATE groups SET users")
         self.dataUpdate(op)
@@ -275,7 +274,10 @@ class projectDB(dbFunction):
         dbFunction.__init__(self)
         if id == 0:
             max = self.dataQuery(("SELECT MAX(id) FROM projects"))[0]['MAX(id)']
-            self.id = max + 1
+            if max:
+                self.id = max + 1
+            else:
+                self.id = 1
         else:
             self.id = int(id)
 
@@ -310,7 +312,7 @@ class projectDB(dbFunction):
 
     def deleteProject(self):
         qry = self.query()
-        for i in range(1,4):
+        for i in range(1, 4):
             users = qry['wish' + str(i)]
             users = users.split(',')
             for user in users:
@@ -330,5 +332,5 @@ class projectDB(dbFunction):
     def changeChosen(self, seq, change):
         qry = self.query()
         chosen = qry['chosen_num%d' % seq]
-        op = ("UPDATE projects SET chosen_num%d=%d WHERE id=%d" % (seq, chosen+change, self.id))
+        op = ("UPDATE projects SET chosen_num%d=%d WHERE id=%d" % (seq, chosen + change, self.id))
         self.dataUpdate(op)
