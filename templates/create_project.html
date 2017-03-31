@@ -22,7 +22,8 @@
                         sponsor: $("#sponsor").val(),
                         instructor: $("#instructor").val(),
                         title: $("#title").val(),
-                        detail: $("#myEditor").val()
+                        detail: $("#myEditor").val(),
+                        major: $("#major").val()
                     },
                     function(data,status){
                     alert(data);
@@ -32,6 +33,7 @@
             $("#title").val("{{ title }}");
             $("#instructor").val("{{ proj['instructor'] }}");
             $("#sponsor").val("{{ proj['sponsor'] }}");
+            $("#major").val("{{ proj['major'] }}")
         });
 {#        $('#fileupload-form').on('submit',(function(e) {#}
 {#   	e.preventDefault();#}
@@ -154,6 +156,10 @@
     <div class="input-group input-group-lg input-title">
         <span class="input-group-addon">Instructor</span>
         <input type="text" class="form-control" placeholder="Instructor" id="instructor">
+    </div>
+    <div class="input-group input-group-lg input-title">
+        <span class="input-group-addon">Major</span>
+        <input type="text" class="form-control" placeholder="Major (ECE or ME or some other things)" id="major">
     </div>
     <textarea class="input-contents" name="text" id="myEditor">{% if detail != '' %}{{ detail }}{% end %}</textarea>
     <button type="button" class="btn btn-primary btn-create" id="create">Create</button>

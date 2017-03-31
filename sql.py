@@ -304,7 +304,7 @@ class projectDB(dbFunction):
         op = ("UPDATE projects SET wish%d='%s' where id=%d" % (seq, res, self.id))
         self.dataUpdate(op)
 
-    def newProject(self, title, detail, img, sponsor='', major='', instructor='Xuan'):
+    def newProject(self, title, detail, img, sponsor='', major='', instructor=''):
         op = (
             "INSERT INTO projects VALUES (%d, '%s', '%s', '%s', '%s', '', '', '', 0, 0, 0, 0, 0, '%s', '%s')" % (
                 self.id, title, img, sponsor, detail, major, instructor))
@@ -335,9 +335,9 @@ class projectDB(dbFunction):
         op = ("UPDATE projects SET chosen_num%d=%d WHERE id=%d" % (seq, chosen + change, self.id))
         self.dataUpdate(op)
 
-    def editProject(self, title, detail, img, sponsor, instructor):
+    def editProject(self, title, detail, img, sponsor, instructor, major):
         if img:
-            op = ("UPDATE projects SET title='%s', detail='%s', img='%s', sponsor='%s', instructor='%s' WHERE id=%d" % (title, detail, img, sponsor, instructor, self.id))
+            op = ("UPDATE projects SET title='%s', detail='%s', img='%s', sponsor='%s', instructor='%s', major='%s' WHERE id=%d" % (title, detail, img, sponsor, instructor, major, self.id))
         else:
-            op = ("UPDATE projects SET title='%s', detail='%s', sponsor='%s', instructor='%s' WHERE id=%d" % (title, detail, sponsor, instructor, self.id))
+            op = ("UPDATE projects SET title='%s', detail='%s', sponsor='%s', instructor='%s', major='%s' WHERE id=%d" % (title, detail, sponsor, instructor, major, self.id))
         self.dataUpdate(op)

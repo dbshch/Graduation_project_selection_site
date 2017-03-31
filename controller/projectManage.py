@@ -22,6 +22,7 @@ class createProjectHandler(BaseHandler):
             detail = project['detail']
             isedit = "true"
         else:
+            project = {'instructor': '', 'sponsor': '', 'major': ''}
             title = ''
             detail = ''
             isedit = 'false'
@@ -52,15 +53,17 @@ class createProjectHandler(BaseHandler):
             detail = self.get_argument("detail")
             sponsor = self.get_argument("sponsor")
             instructor = self.get_argument("instructor")
+            major = self.get_argument('major')
             detail = detail.replace("'", "''")
             sponsor = sponsor.replace("'", "''")
             instructor = instructor.replace("'", "''")
+            major = major.replace("'", "''")
             img = pic_name
             if isedit == "false":
-                projectDB().newProject(title, detail, img, sponsor, instructor)
+                projectDB().newProject(title, detail, img, sponsor, major, instructor)
             else:
                 pid = self.get_argument("pid")
-                projectDB(pid).editProject(title, detail, img, sponsor, instructor)
+                projectDB(pid).editProject(title, detail, img, sponsor, instructor, major)
             self.clear_cookie("pic_name")
             self.write("success")
 

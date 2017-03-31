@@ -52,7 +52,11 @@ class filterHandler(BaseHandler):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
         u_name = self.get_secure_cookie('u_name').decode('UTF-8')
         projs = projectDB().allProjects()
-        projs = filter(lambda proj: proj['major'].lower() == flt, projs)
+        if flt != 'other':
+            projs = filter(lambda proj: proj['major'].lower() == flt, projs)
+        else:
+            projs = filter(lambda proj: proj['major'].lower() != 'me', projs)
+            projs = filter(lambda proj: proj['major'].lower() != 'ece', projs)
         role = userDB(uid).query()['role']
         sort = self.get_argument('sort', default='')
         name = self.get_argument('name', default='')
