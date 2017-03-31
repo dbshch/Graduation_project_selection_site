@@ -30,7 +30,7 @@ class createProjectHandler(BaseHandler):
         if role == 'stu':
             self.render('403.html', u_name=u_name, role=role)
         else:
-            self.render('create_project.html', u_name=u_name, role=role, title=title, detail=detail, isedit=isedit, pid=pid, baseurl=base_url)
+            self.render('create_project.html', u_name=u_name, proj=project, role=role, title=title, detail=detail, isedit=isedit, pid=pid, baseurl=base_url)
 
     @tornado.web.authenticated
     def post(self):
@@ -50,13 +50,17 @@ class createProjectHandler(BaseHandler):
                 self.finish('Upload error')
             title = self.get_argument("title")
             detail = self.get_argument("detail")
+            sponsor = self.get_argument("sponsor")
+            instructor = self.get_argument("instructor")
             detail = detail.replace("'", "''")
+            sponsor = sponsor.replace("'", "''")
+            instructor = instructor.replace("'", "''")
             img = pic_name
             if isedit == "false":
-                projectDB().newProject(title, detail, img)
+                projectDB().newProject(title, detail, img, sponsor, instructor)
             else:
                 pid = self.get_argument("pid")
-                projectDB(pid).editProject(title, detail, img)
+                projectDB(pid).editProject(title, detail, img, sponsor, instructor)
             self.clear_cookie("pic_name")
             self.write("success")
 

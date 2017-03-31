@@ -19,6 +19,8 @@
                 {% if pid != '' %}
                         pid: {{ pid }},
                 {% end %}isedit: "{{ isedit }}",
+                        sponsor: $("#sponsor").val(),
+                        instructor: $("#instructor").val(),
                         title: $("#title").val(),
                         detail: $("#myEditor").val()
                     },
@@ -28,6 +30,8 @@
                 window.location="http://{{ baseurl }}";
             });
             $("#title").val("{{ title }}");
+            $("#instructor").val("{{ proj['instructor'] }}");
+            $("#sponsor").val("{{ proj['sponsor'] }}");
         });
 {#        $('#fileupload-form').on('submit',(function(e) {#}
 {#   	e.preventDefault();#}
@@ -142,6 +146,14 @@
     <div class="input-group input-group-lg input-title">
         <span class="input-group-addon">Title</span>
         <input type="text" class="form-control" placeholder="Project Name" id="title">
+    </div>
+    <div class="input-group input-group-lg input-title">
+        <span class="input-group-addon">Sponsor</span>
+        <input type="text" class="form-control" placeholder="Sponsor" id="sponsor">
+    </div>
+    <div class="input-group input-group-lg input-title">
+        <span class="input-group-addon">Instructor</span>
+        <input type="text" class="form-control" placeholder="Instructor" id="instructor">
     </div>
     <textarea class="input-contents" name="text" id="myEditor">{% if detail != '' %}{{ detail }}{% end %}</textarea>
     <button type="button" class="btn btn-primary btn-create" id="create">Create</button>
