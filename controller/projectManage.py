@@ -15,12 +15,22 @@ class createProjectHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
+        pid = self.get_argument('id', default='')
+        if pid:
+            project = projectDB(int(pid)).query()
+            title = project['title']
+            detail = project['detail']
+            isedit = "true"
+        else:
+            title = ''
+            detail = ''
+            isedit = 'false'
         role = userDB(uid).query()['role']
         u_name = self.get_secure_cookie('u_name').decode('UTF-8')
         if role == 'stu':
             self.render('403.html', u_name=u_name, role=role)
         else:
-            self.render('create_project.html', u_name=u_name, role=role)
+            self.render('create_project.html', u_name=u_name, role=role, title=title, detail=detail, isedit=isedit, pid=pid, baseurl=base_url)
 
     @tornado.web.authenticated
     def post(self):
@@ -30,13 +40,24 @@ class createProjectHandler(BaseHandler):
         if role == 'stu':
             self.render('403.html', u_name=u_name, role=role)
         else:
-            pic_name = self.get_secure_cookie('pic_name').decode('UTF-8')
-            if not pic_name:
+            pic_name = self.get_secure_cookie('pic_name')
+            if pic_name:
+                pic_name = pic_name.decode('UTF-8')
+            else:
+                pic_name = ''
+            isedit = self.get_argument("isedit")
+            if not pic_name and isedit == "false":
                 self.finish('Upload error')
             title = self.get_argument("title")
             detail = self.get_argument("detail")
+            detail = detail.replace("'", "''")
             img = pic_name
-            projectDB().newProject(title, detail, img)
+            if isedit == "false":
+                projectDB().newProject(title, detail, img)
+            else:
+                pid = self.get_argument("pid")
+                projectDB(pid).editProject(title, detail, img)
+            self.clear_cookie("pic_name")
             self.write("success")
 
 class quitProj(BaseHandler):

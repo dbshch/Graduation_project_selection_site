@@ -334,3 +334,10 @@ class projectDB(dbFunction):
         chosen = qry['chosen_num%d' % seq]
         op = ("UPDATE projects SET chosen_num%d=%d WHERE id=%d" % (seq, chosen + change, self.id))
         self.dataUpdate(op)
+
+    def editProject(self, title, detail, img):
+        if img:
+            op = ("UPDATE projects SET title='%s', detail='%s', img='%s' WHERE id=%d" % (title, detail, img, self.id))
+        else:
+            op = ("UPDATE projects SET title='%s', detail='%s' WHERE id=%d" % (title, detail, self.id))
+        self.dataUpdate(op)
