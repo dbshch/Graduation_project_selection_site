@@ -25,6 +25,7 @@
                         function(data,status){
                             alert(data);
                         });
+                 window.location.reload();
              });
              $("#quit").click(function(){
                  $.post("/quit",
@@ -34,6 +35,10 @@
                         function(data,status){
                             alert(data);
                         });
+                 window.location.reload();
+             });
+             $("#edit").click(function(){
+                 window.location="http://{{ baseurl }}/createproject?id={{ i }}";
              });
              $("#delete").click(function(){
                  $.post("/deleteProj",
@@ -43,6 +48,7 @@
                         function(data,status){
                             alert(data);
                         });
+                 window.location="http://{{ baseurl }}";
              });
          });
         </script>
@@ -147,6 +153,9 @@
                         </div>
                         {% end %}
                         {% else %}
+                        <div class="project-submit">
+                            <button class="btn btn-primary" id="edit" style="margin-bottom: 20px;">Edit the Project</button>
+                        </div>
                         <div class="project-submit">
                             <button class="btn btn-primary" id="delete" style="margin-bottom: 20px;">Delete the Project</button>
                         </div>

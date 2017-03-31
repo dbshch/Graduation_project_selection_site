@@ -4,6 +4,12 @@ import tornado.web
 from controller.account import *
 import time
 import os
+from util.env import *
+
+env = get_env()
+base_url = env['domain'] and env['domain'] or 'http://localhost'
+if env['port']:
+    base_url += ':' + str(env['port'])
 
 class createProjectHandler(BaseHandler):
     @tornado.web.authenticated
@@ -89,7 +95,7 @@ class detailHandler(BaseHandler):
         res = userDB(uid).query()
         isIn = id in res['registed']
         role = res['role']
-        self.render("detail.html", i=id, proj=proj, u_name=self.get_secure_cookie('u_name'), isIn=isIn, role=role)
+        self.render("detail.html", i=id, proj=proj, u_name=self.get_secure_cookie('u_name'), isIn=isIn, role=role, baseurl=base_url)
 
 
 class uploadPicHandler(BaseHandler):
