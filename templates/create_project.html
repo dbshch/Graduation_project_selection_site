@@ -130,7 +130,7 @@
         </div>
     </div>
 </nav>
-<div class="contents create-project" style ="width: 65%;text-align: center;margin-left: auto;margin-right: auto;">
+<div class="contents create-project" style ="width: 65%;">
         {% if title != '' %}
         leave the picture submit form if you don't need to change the picture</br>
         {% end %}
@@ -162,6 +162,7 @@
         <input type="text" class="form-control" placeholder="Major (ECE or ME or some other things)" id="major">
     </div>
     <textarea class="input-contents" name="text" id="myEditor">{% if detail != '' %}{{ detail }}{% end %}</textarea>
+    <div class="btn-here" style="text-align:center; margin-left:auto; margin-right:auto;"><button type="button" class="btn btn-primary btn-create" id="create">Create</button></div>
     <button type="button" class="btn btn-primary btn-create" id="create">Create</button>
     <div class="form-group" style="display: none">
                         <input name="picready" class="form-control" value="">
