@@ -79,7 +79,7 @@
                 <div class="panel-heading">Preference {{ i+1 }}: {{ registed[i] }}</div>
                 <div class="panel-body">
                     <div class="progress">
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{ stat[i]*50 }}%;">
+                        <div class="progress-bar progress-bar-{% if stat[i] != 3 %}success{% else %}danger{% end %}" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {% if stat[i] != 3 %}{{ stat[i]*50 }}{% else %} 100{% end %}%;">
                             {{ statstr[i] }}
                         </div>
                     </div>

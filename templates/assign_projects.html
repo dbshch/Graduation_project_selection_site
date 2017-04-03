@@ -8,6 +8,23 @@
     <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="../static/global.css">
     <link rel="stylesheet" href="../static/assign_projects.css">
+    <script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            {% for i in range(len(projs)) %}
+            $("#edit{{ i }}").click(function(){
+                $.post("/assgin",
+                    {
+                        major: $("#major").val()
+                    },
+                    function(data,status){
+                    alert(data);
+                });
+                window.location.reload();
+            });
+            {% end %}
+        });
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-inverse" role="navigation">
@@ -59,46 +76,33 @@
     </div>
 </nav>
 <div class="container">
-  <div class="row post-export">
-    <div class="col-md-4 col-md-offset-8">
-        <button class="btn">Post</button>
-        <button class="btn" disabled="disabled">Export to Excel</button>
-    </div>
-  </div>
   <div class="projects">
+      <h3>After assigning one project, the others who chosen the same project will be rejected. The assigned person will leave his group after assigned and all other choice of him will be rejected.<br>All actions can't be redo.</h3>
+    {% for i in range(len(projs)) %}
     <div class="single-proj">
       <div class="overview row">
         <div class="img col-md-3">
           <a href="#">
-            <img class="thumbnail img-responsive" src="#">
+            <img class="thumbnail img-responsive" src="/img/{{ projs[i]['img'] }}">
           </a>
         </div>
         <div class="title col-md-3">
-          <p> TITLE TITLE TITLE TITLE TITLE TITLE TITLE TITLE TITLE TITLE </p>
+          <p> {{ projs[i]['title'] }} </p>
         </div>
         <div class="allgroups col-md-6">
+          {% for j in range(3) %}
           <div class="somegro">
             <ul>
-              <li>Group 1: fxh, qs</li>
-              <li>Group 2: fxh, qs</li>
-              <li>Group 3: fxh, qs</li>
-              <li>Group 4: fxh, qs</li>
+                <li>Preference {{ j + 1 }}:</li>
+              {% for grp in projs[i]['grpwish%s' % str(j + 1)] %}
+                    <li>Group: {{ grp }}</li>
+                {% end %}
+                {% for indiv in projs[i]['indivwish%s' % str(j + 1)] %}
+                    <li>{{ indiv }}</li>
+                {% end %}
             </ul>
           </div>
-          <div class="somegro">
-            <ul>
-              <li>Group 5: fxh, qs</li>
-              <li>Group 6: fxh, qs</li>
-              <li>Group 7: fxh, qs</li>
-              <li>Group 8: fxh, qs</li>
-            </ul>
-          </div>
-          <div class="somegro">
-            <ul>
-              <li>Group 9: fxh, qs</li>
-              <li>Group 10: fxh, qs</li>
-            </ul>
-          </div>
+            {% end %}
         </div>
       </div>
       <div class="assign row">
@@ -108,154 +112,25 @@
           </div>
           <div class="select">
             <form role="form">
+                {% for k in range(5) %}
               <div class="form-group select-stu">
                 <select class="form-control">
                   <option>SELECT</option>
-                  <option>qs</option>
-                  <option>fxh</option>
-                  <option>xd</option>
-                  <option>dbshch from Intel</option>
+                    {% for usr in projs[i]['all'] %}
+                        <option>{{ usr }}</option>
+                    {% end %}
                 </select>
               </div>
-              <div class="form-group select-stu">
-                <select class="form-control">
-                  <option>SELECT</option>
-                  <option>qs</option>
-                  <option>fxh</option>
-                  <option>xd</option>
-                  <option>dbshch from Intel</option>
-                </select>
-              </div>
-              <div class="form-group select-stu">
-                <select class="form-control">
-                  <option>SELECT</option>
-                  <option>qs</option>
-                  <option>fxh</option>
-                  <option>xd</option>
-                  <option>dbshch from Intel</option>
-                </select>
-              </div>
-              <div class="form-group select-stu">
-                <select class="form-control">
-                  <option>SELECT</option>
-                  <option>qs</option>
-                  <option>fxh</option>
-                  <option>xd</option>
-                  <option>dbshch from Intel</option>
-                </select>
-              </div>
-              <div class="form-group select-stu">
-                <select class="form-control">
-                  <option>SELECT</option>
-                  <option>qs</option>
-                  <option>fxh</option>
-                  <option>xd</option>
-                  <option>dbshch from Intel</option>
-                </select>
-              </div>
+                {% end %}
             </form>
           </div>
         </div>
         <div class="col-md-2 comfirm">
-          <button class="btn btn-default">Confirm</button>
+          <button class="btn btn-primary" id="edit{{ i }}">Confirm Edit</button>
         </div>
       </div>
     </div>
-    <div class="single-proj">
-      <div class="overview row">
-        <div class="img col-md-3">
-          <a href="#">
-            <img class="thumbnail img-responsive" src="#">
-          </a>
-        </div>
-        <div class="title col-md-3">
-          <p> TITLE TITLE TITLE TITLE TITLE TITLE TITLE TITLE TITLE TITLE </p>
-        </div>
-        <div class="allgroups col-md-6">
-          <div class="somegro">
-            <ul>
-              <li>Group 1: fxh, qs</li>
-              <li>Group 2: fxh, qs</li>
-              <li>Group 3: fxh, qs</li>
-              <li>Group 4: fxh, qs</li>
-            </ul>
-          </div>
-          <div class="somegro">
-            <ul>
-              <li>Group 5: fxh, qs</li>
-              <li>Group 6: fxh, qs</li>
-              <li>Group 7: fxh, qs</li>
-              <li>Group 8: fxh, qs</li>
-            </ul>
-          </div>
-          <div class="somegro">
-            <ul>
-              <li>Group 9: fxh, qs</li>
-              <li>Group 10: fxh, qs</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="assign row">
-        <div class="col-md-10">
-          <div class="label-assign">
-            <label>Assign:</label>
-          </div>
-          <div class="select">
-            <form role="form">
-              <div class="form-group select-stu">
-                <select class="form-control">
-                  <option>SELECT</option>
-                  <option>qs</option>
-                  <option>fxh</option>
-                  <option>xd</option>
-                  <option>dbshch from Intel</option>
-                </select>
-              </div>
-              <div class="form-group select-stu">
-                <select class="form-control">
-                  <option>SELECT</option>
-                  <option>qs</option>
-                  <option>fxh</option>
-                  <option>xd</option>
-                  <option>dbshch from Intel</option>
-                </select>
-              </div>
-              <div class="form-group select-stu">
-                <select class="form-control">
-                  <option>SELECT</option>
-                  <option>qs</option>
-                  <option>fxh</option>
-                  <option>xd</option>
-                  <option>dbshch from Intel</option>
-                </select>
-              </div>
-              <div class="form-group select-stu">
-                <select class="form-control">
-                  <option>SELECT</option>
-                  <option>qs</option>
-                  <option>fxh</option>
-                  <option>xd</option>
-                  <option>dbshch from Intel</option>
-                </select>
-              </div>
-              <div class="form-group select-stu">
-                <select class="form-control">
-                  <option>SELECT</option>
-                  <option>qs</option>
-                  <option>fxh</option>
-                  <option>xd</option>
-                  <option>dbshch from Intel</option>
-                </select>
-              </div>
-            </form>
-          </div>
-        </div>
-        <div class="col-md-2 comfirm">
-          <button class="btn btn-default">Edit</button>
-        </div>
-      </div>
-    </div>
+      {% end %}
   </div>
 </div>
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>

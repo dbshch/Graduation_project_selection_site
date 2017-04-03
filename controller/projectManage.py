@@ -169,7 +169,40 @@ class assignProjHandler(BaseHandler):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
         role = userDB(uid).query()['role']
         u_name = self.get_secure_cookie('u_name').decode('UTF-8')
+        projs = projectDB().allProjects()
+        for proj in projs:
+            proj['all'] = []
+            for i in range(3):
+                grp = []
+                indiv = []
+                stus = proj['wish' + str(i + 1)].split(',')
+                for member in stus:
+                    if not member:
+                        continue
+                    inf = userDB(int(member)).query()
+                    if inf['grouped'] == 'n':
+                        indiv.append(inf['u_name'])
+                        proj['all'].append(inf['u_name'])
+                    elif inf['grouped'] == 'y':
+                        tmp = groupDB(int(inf['group_id'])).all_users()
+                        tp = []
+                        for usr in tmp:
+                            uname = userDB(int(usr)).query()['u_name']
+                            tp.append(uname)
+                            proj['all'].append(uname)
+                        grp.append(','.join(tp))
+                proj['grpwish' + str(i + 1)] = grp
+                proj['indivwish' + str(i + 1)] = indiv
+
         if role == 'stu':
             self.render('403.html', u_name=u_name, role=role)
         else:
-            self.render('assign_projects.html', u_name=u_name, role=role)
+            self.render('assign_projects.html', u_name=u_name, role=role, projs=projs)
+
+    @tornado.web.authenticated
+    def post(self):
+        uid = int(tornado.escape.xhtml_escape(self.current_user))
+        role = userDB(uid).query()['role']
+        u_name = self.get_secure_cookie('u_name').decode('UTF-8')
+        if role == 'stu':
+            self.write("not authorized")

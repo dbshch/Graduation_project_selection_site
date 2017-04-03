@@ -124,7 +124,9 @@ class registedHandler(BaseHandler):
             if int(stat[i]) == 1:
                 statstr.append('Need verified by instructor')
             if int(stat[i]) == 2:
-                statstr.append('Succeed')
+                statstr.append('Accepted')
+            if int(stat[i]) == 3:
+                statstr.append('The choice was Rejected or you have been assigned by other project')
             stat[i] = int(stat[i])
         if role == 'admin':
             self.render('403.html', u_name=u_name, role=role)
