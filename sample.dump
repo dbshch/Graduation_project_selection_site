@@ -65,6 +65,7 @@ CREATE TABLE `projects` (
   `update_time` int(11) NOT NULL,
   `major` varchar(255) NOT NULL,
   `instructor` varchar(255) NOT NULL,
+  `assigned` varchar(1) NOT NULL DEFAULT 'n',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

@@ -163,6 +163,8 @@ class userDB(dbFunction):
         res = ','.join(res)
         op = ("UPDATE projects SET wish%d='%s' where id=%d" % (wish_i, res, id))
         self.dataUpdate(op)
+        if self.query()['grouped'] == 'l':
+            projectDB(id).changeChosen(wish_i, -1)
 
     def joinGroup(self, id):
         qry = self.dataQuery(("SELECT users, user_id FROM groups WHERE id=%d" % id))[0]
@@ -196,9 +198,13 @@ class userDB(dbFunction):
         self.dataUpdate(op)
         op = ("UPDATE users SET grouped='n', group_id=0 WHERE id=%d" % self.uid)
         self.dataUpdate(op)
+        self.group_id = 0
 
     def leaderQuit(self):
         gid = self.query()['group_id']
+        grp = groupDB(int(gid)).members()
+        for mem in grp:
+            userDB(int(mem)).quitGroup()
         op = ("DELETE FROM groups WHERE id=%d" % gid)
         self.dataUpdate(op)
         op = ("UPDATE users SET grouped='n', group_id=0 WHERE id=%d" % self.uid)
@@ -207,6 +213,7 @@ class userDB(dbFunction):
         for i in range(3):
             if wish[i] != 'n':
                 projectDB(wish[i]).changeChosen(i + 1, -1)
+        self.group_id = 0
 
     def createGroup(self):
         new_group = groupDB()
@@ -310,7 +317,7 @@ class projectDB(dbFunction):
 
     def newProject(self, title, detail, img, sponsor='', major='', instructor=''):
         op = (
-            "INSERT INTO projects VALUES (%d, '%s', '%s', '%s', '%s', '', '', '', 0, 0, 0, 0, 0, '%s', '%s')" % (
+            "INSERT INTO projects VALUES (%d, '%s', '%s', '%s', '%s', '', '', '', 0, 0, 0, 0, 0, '%s', '%s', 'n')" % (
                 self.id, title, img, sponsor, detail, major, instructor))
         self.dataUpdate(op)
 
@@ -335,8 +342,8 @@ class projectDB(dbFunction):
 
     def changeChosen(self, seq, change):
         qry = self.query()
-        chosen = qry['chosen_num%d' % seq]
-        op = ("UPDATE projects SET chosen_num%d=%d WHERE id=%d" % (seq, chosen + change, self.id))
+        chosen = int(qry['chosen_num%d' % seq])
+        op = ("UPDATE projects SET chosen_num%d=%d WHERE id=%d" % (seq, chosen + int(change), self.id))
         self.dataUpdate(op)
 
     def editProject(self, title, detail, img, sponsor, instructor, major):

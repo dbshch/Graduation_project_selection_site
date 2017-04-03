@@ -12,16 +12,29 @@
     <script>
         $(document).ready(function(){
             {% for i in range(len(projs)) %}
-            $("#edit{{ i }}").click(function(){
-                $.post("/assgin",
-                    {
-                        major: $("#major").val()
-                    },
-                    function(data,status){
-                    alert(data);
-                });
-                window.location.reload();
-            });
+            $("#edit{{ i }}").click(function() {
+        var select = $(this).parents('.assign').find('.select-stu').find('.form-control');
+        var pid = {{ projs[i]['id'] }}; // 后端直接输
+        var result = [];
+
+        select.each(function(index, option) {
+            var chosen = $(option).find(":selected").text();
+            if (chosen === "SELECT") {
+                return;
+            }
+            result.push(chosen);
+        });
+
+        result = result.join(",");
+
+        $.post("/assign", {
+            pid: pid,
+            usr_list: result
+        },function(data,status){
+            alert(data);
+        });
+        window.location.reload();
+    });
             {% end %}
         });
     </script>
