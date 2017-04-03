@@ -79,6 +79,7 @@
   <div class="projects">
       <h3>After assigning one project, the others who chosen the same project will be rejected. The assigned person will leave his group after assigned and all other choice of him will be rejected.<br>All actions can't be redo.</h3>
     {% for i in range(len(projs)) %}
+      {% if projs[i]['assigned'] == 'n' %}
     <div class="single-proj">
       <div class="overview row">
         <div class="img col-md-3">
@@ -130,6 +131,7 @@
         </div>
       </div>
     </div>
+      {% end %}
       {% end %}
   </div>
 </div>

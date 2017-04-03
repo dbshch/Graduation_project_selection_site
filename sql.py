@@ -219,6 +219,10 @@ class userDB(dbFunction):
             if wish[i] != 'n':
                 projectDB(wish[i]).changeChosen(i + 1, 1)
 
+    def verify(self):
+        op = ("UPDATE users SET stat='2,0,0' WHERE id=%d" % self.uid)
+        self.dataUpdate(op)
+
 
 class groupDB(dbFunction):
     def __init__(self, id=0):
@@ -340,4 +344,8 @@ class projectDB(dbFunction):
             op = ("UPDATE projects SET title='%s', detail='%s', img='%s', sponsor='%s', instructor='%s', major='%s' WHERE id=%d" % (title, detail, img, sponsor, instructor, major, self.id))
         else:
             op = ("UPDATE projects SET title='%s', detail='%s', sponsor='%s', instructor='%s', major='%s' WHERE id=%d" % (title, detail, sponsor, instructor, major, self.id))
+        self.dataUpdate(op)
+
+    def assigned(self):
+        op = ("UPDATE projects SET assigned='y' WHERE id=%d" % self.id)
         self.dataUpdate(op)

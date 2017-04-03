@@ -4,6 +4,7 @@ import tornado.web
 from controller.account import *
 import time
 import os
+import re
 from util.env import *
 
 env = get_env()
@@ -182,14 +183,14 @@ class assignProjHandler(BaseHandler):
                     inf = userDB(int(member)).query()
                     if inf['grouped'] == 'n':
                         indiv.append(inf['u_name'])
-                        proj['all'].append(inf['u_name'])
+                        proj['all'].append(inf['u_name'] + '-' + str(member))
                     elif inf['grouped'] == 'y':
                         tmp = groupDB(int(inf['group_id'])).all_users()
                         tp = []
                         for usr in tmp:
                             uname = userDB(int(usr)).query()['u_name']
                             tp.append(uname)
-                            proj['all'].append(uname)
+                            proj['all'].append(uname + '-' + str(usr))
                         grp.append(','.join(tp))
                 proj['grpwish' + str(i + 1)] = grp
                 proj['indivwish' + str(i + 1)] = indiv
@@ -203,6 +204,27 @@ class assignProjHandler(BaseHandler):
     def post(self):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
         role = userDB(uid).query()['role']
-        u_name = self.get_secure_cookie('u_name').decode('UTF-8')
         if role == 'stu':
-            self.write("not authorized")
+            self.finish("not authorized")
+        res = self.get_argument("usr_list")
+        pid = self.get_argument("id")
+        pdb = projectDB(int(pid))
+        data = pdb.query()
+        for i in range(3):
+            old_usrs = data['wish%d' % (i + 1)].split(',')
+            for old_usr in old_usrs:
+                userDB(int(old_usr)).quitProj(pid, str(i + 1))
+        filter = re.compile(r'.+-(\d+)')
+        for usr in res.split(','):
+            if not usr:
+                continue
+            uid = int(filter.match(usr).group(1))
+            usr_db = usrDB(uid)
+            if usr_db.isLeader():
+                usr_db.leaderQuit()
+            else:
+                usr_db.quitGroup()
+            usr_db.register('%d,n,n' % int(pid))
+            usr_db.verify()
+        pdb.assigned()
+        self.finish('success')
