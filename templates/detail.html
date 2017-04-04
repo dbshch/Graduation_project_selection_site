@@ -38,7 +38,7 @@
                  window.location.reload();
              });
              $("#edit").click(function(){
-                 window.location="http://{{ baseurl }}/createproject?id={{ i }}";
+                 window.location="{{ baseurl }}/createproject?id={{ i }}";
              });
              $("#delete").click(function(){
                  $.post("/deleteProj",
@@ -48,7 +48,7 @@
                         function(data,status){
                             alert(data);
                         });
-                 window.location="http://{{ baseurl }}";
+                 window.location="{{ baseurl }}";
              });
          });
         </script>

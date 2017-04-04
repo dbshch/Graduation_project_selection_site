@@ -204,7 +204,8 @@ class userDB(dbFunction):
         gid = self.query()['group_id']
         grp = groupDB(int(gid)).members()
         for mem in grp:
-            userDB(int(mem)).quitGroup()
+            if mem:
+                userDB(int(mem)).quitGroup()
         op = ("DELETE FROM groups WHERE id=%d" % gid)
         self.dataUpdate(op)
         op = ("UPDATE users SET grouped='n', group_id=0 WHERE id=%d" % self.uid)
@@ -314,6 +315,8 @@ class projectDB(dbFunction):
             res = str(userid)
         op = ("UPDATE projects SET wish%d='%s' where id=%d" % (seq, res, self.id))
         self.dataUpdate(op)
+        if userDB(int(userid)).isLeader():
+            self.changeChosen(int(seq), 1)
 
     def newProject(self, title, detail, img, sponsor='', major='', instructor=''):
         op = (

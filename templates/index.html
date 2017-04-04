@@ -98,7 +98,7 @@
             </div>
             <!-- header -->
             <div class="header row">
-              <div class="col-md-4">
+              <div class="col-md-3">
                   <p>
                       <span>Project</span>
                       <a href="?sort={% if sort == 'up' %}down{% else %}up{% end %}&name=title"><i class="fa fa-sort" aria-hidden="true"></i></a>
@@ -128,7 +128,7 @@
                       <a href="?sort={% if sort == 'up' %}down{% else %}up{% end %}&name=tchoice"><i class="fa fa-sort" aria-hidden="true"></i></a>
                   </p>
               </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
                   <p>
                       <span>Sponsor</span>
                       <a href="?sort={% if sort == 'up' %}down{% else %}up{% end %}&name=sponsor"><i class="fa fa-sort" aria-hidden="true"></i></a>
@@ -148,7 +148,7 @@
                         <p>{{ item['title'] }}</p>
                     </a>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
                     <p>{{ item['instructor'] }}</p>
                 </div>
                 <div class="col-md-2">
@@ -160,7 +160,7 @@
                 <div class="col-md-2">
                     <p>{{ item['chosen_num3'] }} Groups, {{ person_num(item['wish3']) }} students</p>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
                     <p>{{ item['sponsor'] }}</p>
                 </div>
             </div>

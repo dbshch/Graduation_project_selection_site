@@ -43,6 +43,15 @@ class WelcomeHandler(BaseHandler):
                 projs = sorted(projs, key=lambda proj: proj[name])
             if sort == 'down':
                 projs.reverse()
+        for proj in projs:
+            for i in range(3):
+                k = 0
+                for mem in proj['wish%d' % (i + 1)].split(','):
+                    if not mem:
+                        continue
+                    if userDB(int(mem)).isLeader():
+                        k += 1
+                proj['chosen_num%d' % (i + 1)] = k
         self.render('index.html', u_name=u_name, projs=projs, role=role, sort=sort, flt='')
 
 
@@ -52,6 +61,15 @@ class filterHandler(BaseHandler):
         uid = int(tornado.escape.xhtml_escape(self.current_user))
         u_name = self.get_secure_cookie('u_name').decode('UTF-8')
         projs = projectDB().allProjects()
+        for proj in projs:
+            for i in range(3):
+                k = 0
+                for mem in proj['wish%d' % (i + 1)].split(','):
+                    if not mem:
+                        continue
+                    if userDB(int(mem)).isLeader():
+                        k += 1
+                proj['chosen_num%d' % (i + 1)] = k
         if flt != 'other':
             projs = filter(lambda proj: proj['major'].lower() == flt, projs)
         else:

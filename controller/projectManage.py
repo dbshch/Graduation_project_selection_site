@@ -119,6 +119,14 @@ class detailHandler(BaseHandler):
 
             proj.view()
         proj = proj.query()
+        for i in range(3):
+            k = 0
+            for mem in proj['wish%d' % (i + 1)].split(','):
+                if not mem:
+                    continue
+                if userDB(int(mem)).isLeader():
+                    k += 1
+            proj['chosen_num%d' % (i + 1)] = k
         proj['detail'] = proj['detail'].split('\n')
         uid = int(tornado.escape.xhtml_escape(self.current_user))
         res = userDB(uid).query()
