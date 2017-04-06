@@ -14,7 +14,7 @@
             $("#join").click(function(){
                 $.post("/joinGroup",
                     {
-                        gid: $(this).val()+1,
+                        gid: parseInt($(this).val()),
                         method: "join"
                     },
                     function(data,status){
@@ -189,7 +189,7 @@
                         </div>
                         <div class="modal-footer" align="center">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary" value={{ i }} id="join">Confirm</button>
+                          <button type="button" class="btn btn-primary" value={{ groups[i]['id'] }} id="join">Confirm</button>
                         </div>
                       </div>
                     </div>
