@@ -231,6 +231,12 @@ class userDB(dbFunction):
         op = ("UPDATE users SET stat='2,0,0' WHERE id=%d" % self.uid)
         self.dataUpdate(op)
 
+    def isAssigned(self):
+        stat = self.query()['stat']
+        if stat == '2,0,0':
+            return True
+        return False
+
 
 class groupDB(dbFunction):
     def __init__(self, id=0):

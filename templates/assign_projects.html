@@ -130,8 +130,8 @@
               <div class="form-group select-stu">
                 <select class="form-control">
                   <option>SELECT</option>
-                    {% for usr in projs[i]['all'] %}
-                        <option>{{ usr }}</option>
+                    {% for usr in all_usr %}
+                        <option>{{ usr['u_name'] }}-{{ usr['id'] }}</option>
                     {% end %}
                 </select>
               </div>

@@ -179,6 +179,11 @@ class assignProjHandler(BaseHandler):
         role = userDB(uid).query()['role']
         u_name = self.get_secure_cookie('u_name').decode('UTF-8')
         projs = projectDB().allProjects()
+        alu = userDB(uid).allUsers()
+        all_usr = []
+        for usr in alu:
+            if not userDB(int(usr['id'])).isAssigned():
+                all_usr.append(usr)
         for proj in projs:
             proj['all'] = []
             for i in range(3):
@@ -206,7 +211,7 @@ class assignProjHandler(BaseHandler):
         if role == 'stu':
             self.render('403.html', u_name=u_name, role=role)
         else:
-            self.render('assign_projects.html', u_name=u_name, role=role, projs=projs)
+            self.render('assign_projects.html', u_name=u_name, role=role, projs=projs, all_usr=all_usr)
 
     @tornado.web.authenticated
     def post(self):
