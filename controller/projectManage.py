@@ -182,7 +182,8 @@ class assignProjHandler(BaseHandler):
         alu = userDB(uid).allUsers()
         all_usr = []
         for usr in alu:
-            if not userDB(int(usr['id'])).isAssigned():
+            user = userDB(int(usr['id']))
+            if not user.isAssigned() and user.query()['role'] != 'admin':
                 all_usr.append(usr)
         for proj in projs:
             proj['all'] = []
@@ -243,7 +244,7 @@ class assignProjHandler(BaseHandler):
             usr_db = userDB(uid)
             if usr_db.isLeader():
                 usr_db.leaderQuit()
-            else:
+            elif usr_db.isGrouped():
                 usr_db.quitGroup()
             usr_db.register('%d,n,n' % int(pid))
             usr_db.verify()
