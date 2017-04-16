@@ -108,7 +108,6 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('钱圣轶','stu','1,n,n','123','1,0,0',515370910143,'y',1,1234567890,'ECE','male'),('吴承刚','admin','1,n,n','123','1,0,0',515370910252,'l',1,123,'123','male');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

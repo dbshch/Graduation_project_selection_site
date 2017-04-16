@@ -3,13 +3,21 @@ import copy
 from util.env import *
 
 env = get_env()
-config = {
-    'user': str(env['user']),
-    'password': str(env['password']),
-    'host': '127.0.0.1',
-    'database': str(env['database']),
-    'raise_on_warnings': True,
-}
+if str(env['password']) != 'None':
+    config = {
+        'user': str(env['user']),
+        'password': str(env['password']),
+        'host': '127.0.0.1',
+        'database': str(env['database']),
+        'raise_on_warnings': False,
+    }
+else:
+    config = {
+        'user': str(env['user']),
+        'host': '127.0.0.1',
+        'database': str(env['database']),
+        'raise_on_warnings': False,
+    }
 
 
 class ippDB():
